@@ -1,0 +1,461 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算物理之简谐振动 | OldCabbage</title><meta name="author" content="Ethan Liu"><meta name="copyright" content="Ethan Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="计算物理课的思考">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算物理之简谐振动">
+<meta property="og:url" content="https://oldcabbage.fun/2024/10/24/comphy-oscillator/index.html">
+<meta property="og:site_name" content="OldCabbage">
+<meta property="og:description" content="计算物理课的思考">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg">
+<meta property="article:published_time" content="2024-10-24T10:08:00.000Z">
+<meta property="article:modified_time" content="2024-10-24T10:11:05.421Z">
+<meta property="article:author" content="Ethan Liu">
+<meta property="article:tag" content="计算物理">
+<meta property="article:tag" content="简谐振动">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg"><link rel="shortcut icon" href="/img/cabbage-peel.png"><link rel="canonical" href="https://oldcabbage.fun/2024/10/24/comphy-oscillator/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        if (name && globalFn[key][name]) return
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0e1deb15fac28b40c47a6627b066d96a";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算物理之简谐振动',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-24 18:11:05'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(https://images.pexels.com/photos/28939359/pexels-photo-28939359.jpeg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar-peel.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 影音</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/cabbage-large-peel.png" alt="Logo"><span class="site-name">OldCabbage</span></a><a class="nav-page-title" href="/"><span class="site-name">计算物理之简谐振动</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 影音</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">计算物理之简谐振动</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-24T10:08:00.000Z" title="发表于 2024-10-24 18:08:00">2024-10-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-24T10:11:05.421Z" title="更新于 2024-10-24 18:11:05">2024-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E7%89%A9%E7%90%86/">计算物理</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="讨论误差的影响"><a href="#讨论误差的影响" class="headerlink" title="讨论误差的影响"></a>讨论误差的影响</h2><p>考虑一个单摆我们可以先解析的求解</p>
+<script type="math/tex; mode=display">
+F_\theta=-m g \sin \theta,</script><script type="math/tex; mode=display">
+F_\theta=m d^2s/dt^2</script><script type="math/tex; mode=display">
+\sin \theta \approx \theta</script><script type="math/tex; mode=display">
+\frac{d^2 \theta}{d t^2}=-\frac{g}{\ell} \theta</script><p>解析解</p>
+<script type="math/tex; mode=display">
+\theta=\theta_0 \sin (\Omega t+\phi)</script><p>  这里 $\omega$ 是角速度</p>
+<script type="math/tex; mode=display">
+\Omega=\sqrt{g / \ell}</script><p>  and $\theta_0$ and $\phi$ are constants that depend on the initial displacement and velocity of the pendulum.</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& \frac{d \omega}{d t}=-\frac{g}{\ell} \theta, \\
+& \frac{d \theta}{d t}=\omega,
+\end{aligned}</script><blockquote>
+<p>二阶常微分方程数值求解方式是类似的。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\omega_{i+1} & =\omega_i-\frac{g}{\ell} \theta_i \Delta t, \\
+\theta_{i+1} & =\theta_i+\omega_i \Delta t .
+\end{aligned}</script><p>写出对应的程序</p>
+<p>json文档</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;pendulum1&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;length&quot;</span><span class="punctuation">:</span><span class="number">2.0</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;theta0&quot;</span><span class="punctuation">:</span><span class="number">3.0</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;omega0&quot;</span><span class="punctuation">:</span> <span class="number">0.0</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Simulation of pendulum</span></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># declare contants</span></span><br><span class="line">g = <span class="number">9.8</span></span><br><span class="line">dt = <span class="number">0.1</span></span><br><span class="line">max_steps = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># declare pendulum class</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Simple_Pendulum</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, length, theta0=<span class="number">0</span>, omega0=<span class="number">0</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.length = length</span><br><span class="line">        <span class="variable language_">self</span>.theta = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.omega = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.t = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.theta[<span class="number">0</span>] = theta0</span><br><span class="line">        <span class="variable language_">self</span>.omega[<span class="number">0</span>] = omega0</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calculate</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_steps):</span><br><span class="line">            <span class="variable language_">self</span>.theta[i + <span class="number">1</span>], <span class="variable language_">self</span>.omega[i + <span class="number">1</span>], <span class="variable language_">self</span>.t[i + <span class="number">1</span>] = <span class="variable language_">self</span>.move_one_step(<span class="variable language_">self</span>.theta[i], <span class="variable language_">self</span>.omega[i], <span class="variable language_">self</span>.t[i])</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">move_one_step</span>(<span class="params">self, theta, omega, t</span>):</span><br><span class="line">        _theta = theta + omega*dt</span><br><span class="line">        _omega = omega - (g/<span class="variable language_">self</span>.length)*theta*dt</span><br><span class="line">        _t = t + dt</span><br><span class="line">        <span class="keyword">return</span> _theta, _omega, _t</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_results</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.theta, <span class="variable language_">self</span>.omega, <span class="variable language_">self</span>.t</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_pendulum</span>():</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;./computational-physics-project/lecture-3/pendulum.json&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = json.load(f)</span><br><span class="line">    pendulum1 = Simple_Pendulum(data[<span class="string">&quot;pendulum1&quot;</span>][<span class="string">&quot;length&quot;</span>],</span><br><span class="line">                                data[<span class="string">&quot;pendulum1&quot;</span>][<span class="string">&quot;theta0&quot;</span>],</span><br><span class="line">                                data[<span class="string">&quot;pendulum1&quot;</span>][<span class="string">&quot;omega0&quot;</span>])</span><br><span class="line">    pendulum1.calculate()</span><br><span class="line">    fig, ax = plt.subplots(<span class="number">2</span>, <span class="number">1</span>, layout=<span class="string">&quot;constrained&quot;</span>)</span><br><span class="line">    theta, omega, t = pendulum1.get_results()</span><br><span class="line">    ax[<span class="number">0</span>].plot(t, theta, label=<span class="string">r&quot;$\theta$&quot;</span>)</span><br><span class="line">    ax[<span class="number">0</span>].<span class="built_in">set</span>(xlabel=<span class="string">&quot;t(s)&quot;</span>, ylabel=<span class="string">r&quot;$\theta$(m)&quot;</span>)</span><br><span class="line">    ax[<span class="number">0</span>].legend()</span><br><span class="line">    ax[<span class="number">0</span>].set_title(<span class="string">r&quot;Oscillation of $\theta$&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].plot(t, omega, label=<span class="string">r&quot;$\omega$&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].<span class="built_in">set</span>(xlabel=<span class="string">&quot;t(s)&quot;</span>, ylabel=<span class="string">r&quot;$\omega$(m/s)&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].legend()</span><br><span class="line">    ax[<span class="number">1</span>].set_title(<span class="string">r&quot;Oscillation of $\omega$&quot;</span>)</span><br><span class="line">    plt.savefig(<span class="string">&quot;pendulum.png&quot;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">show_pendulum()</span><br></pre></td></tr></table></figure>
+<p><img src="/img/pendulum.png" alt="pendulum"></p>
+<p>很明显，这样处理会导致结果发散</p>
+<h2 id="结果发散的原因"><a href="#结果发散的原因" class="headerlink" title="结果发散的原因"></a>结果发散的原因</h2><blockquote>
+<p>是体系的能量不守恒</p>
+</blockquote>
+<script type="math/tex; mode=display">
+E=\frac{1}{2} m \ell^2 \omega^2+m g \ell(1-\cos \theta) .</script><p>小 $\theta$ 有近似</p>
+<script type="math/tex; mode=display">
+E=\frac{1}{2} m \ell^2\left(\omega^2+\frac{g}{\ell} \theta^2\right) .</script><p>使用欧拉方法进行转化</p>
+<script type="math/tex; mode=display">
+E_{i+1}=E_i+\frac{1}{2} m g \ell\left(\omega_i^2+\frac{g}{\ell} \theta_i^2\right)(\Delta t)^2</script><blockquote>
+<p>其实只需要使用 $x<em>{i+1}=x_i+v</em>{i+1}dt$ 代替 $x<em>{i+1}=x_i+v</em>{i}dt$ 就可以一定程度上解决</p>
+</blockquote>
+<h2 id="使用Euler-Cromer方法进行模拟"><a href="#使用Euler-Cromer方法进行模拟" class="headerlink" title="使用Euler-Cromer方法进行模拟"></a>使用Euler-Cromer方法进行模拟</h2><p>对于简谐运动，运动方程的一般形式为</p>
+<script type="math/tex; mode=display">
+\frac{d^2x}{dt^2}=-kx^\alpha</script><blockquote>
+<p>采用 Euler-Cromer 方法求解 x 关于时间的函数，其中 $\alpha=1$ （为了方便，取 k=1 ）。这是简谐运动的一个关键特征。然后将程序扩展到处理 $\alpha=3$ 的情况。这是一个非简谐振子的例子。计算了几个不同振幅（在范围 0.2 到 1 内）下的振动周期，并证明现在运动的周期取决于振幅。</p>
+</blockquote>
+<h3 id="alpha-1-的情况"><a href="#alpha-1-的情况" class="headerlink" title="$\alpha=1$ 的情况"></a>$\alpha=1$ 的情况</h3><p>谐振子的 json 文档为</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;oscillator&quot;</span><span class="punctuation">:</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;oscillator1&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;distance0&quot;</span><span class="punctuation">:</span><span class="number">1.0</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;velocity0&quot;</span><span class="punctuation">:</span><span class="number">0</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;oscillator2&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;distance0&quot;</span><span class="punctuation">:</span><span class="number">0.2</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;velocity0&quot;</span><span class="punctuation">:</span><span class="number">0</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;oscillator3&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;distance0&quot;</span><span class="punctuation">:</span><span class="number">0.4</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;velocity0&quot;</span><span class="punctuation">:</span><span class="number">0</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;oscillator4&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;distance0&quot;</span><span class="punctuation">:</span><span class="number">0.6</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;velocity0&quot;</span><span class="punctuation">:</span><span class="number">0</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;oscillator5&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;distance0&quot;</span><span class="punctuation">:</span><span class="number">0.8</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;velocity0&quot;</span><span class="punctuation">:</span><span class="number">0</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>我们要研究这个函数的图像</p>
+<script type="math/tex; mode=display">
+\frac{d^2x}{dt^2}=-kx^\alpha</script><p>先只取 $\alpha=1$ ,并且 $k=1$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Simulation of pendulum with Euler Cromer</span></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># declare contants</span></span><br><span class="line">k=<span class="number">1</span></span><br><span class="line">dt = <span class="number">0.1</span></span><br><span class="line">max_steps = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">simple_oscillator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, distance0=<span class="number">0</span>, velocity0=<span class="number">0</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.distance = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.velocity = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.t = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.distance[<span class="number">0</span>] = distance0</span><br><span class="line">        <span class="variable language_">self</span>.velocity[<span class="number">0</span>] = velocity0</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calculate</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_steps):</span><br><span class="line">            <span class="variable language_">self</span>.distance[i + <span class="number">1</span>], <span class="variable language_">self</span>.velocity[i + <span class="number">1</span>], <span class="variable language_">self</span>.t[i + <span class="number">1</span>] = <span class="variable language_">self</span>.move_one_step(<span class="variable language_">self</span>.distance[i], <span class="variable language_">self</span>.velocity[i], <span class="variable language_">self</span>.t[i])</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">move_one_step</span>(<span class="params">self, distance, velocity, t</span>):</span><br><span class="line">        _velocity = velocity - k*distance*dt</span><br><span class="line">        _distance = distance + _velocity*dt</span><br><span class="line">        _t = t + dt</span><br><span class="line">        <span class="keyword">return</span> _distance, _velocity, _t</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_results</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.distance, <span class="variable language_">self</span>.velocity, <span class="variable language_">self</span>.t</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_oscillator_with_Euler_Cromer</span>():</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;oscillator.json&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = json.load(f)</span><br><span class="line">    oscillator1 = simple_oscillator(data[<span class="string">&quot;oscillator1&quot;</span>][<span class="string">&quot;distance0&quot;</span>],</span><br><span class="line">                                data[<span class="string">&quot;oscillator1&quot;</span>][<span class="string">&quot;velocity0&quot;</span>])</span><br><span class="line">    oscillator1.calculate()</span><br><span class="line">    fig, ax = plt.subplots(<span class="number">2</span>, <span class="number">1</span>, layout=<span class="string">&quot;constrained&quot;</span>)</span><br><span class="line">    distance, velocity, t = oscillator1.get_results()</span><br><span class="line">    ax[<span class="number">0</span>].plot(t, distance, label=<span class="string">r&quot;$x$&quot;</span>)</span><br><span class="line">    ax[<span class="number">0</span>].<span class="built_in">set</span>(xlabel=<span class="string">&quot;t(s)&quot;</span>, ylabel=<span class="string">r&quot;$x$(m)&quot;</span>)</span><br><span class="line">    ax[<span class="number">0</span>].legend()</span><br><span class="line">    ax[<span class="number">0</span>].set_title(<span class="string">r&quot;Oscillation of $x$&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].plot(t, velocity, label=<span class="string">r&quot;$v$&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].<span class="built_in">set</span>(xlabel=<span class="string">&quot;t(s)&quot;</span>, ylabel=<span class="string">r&quot;$v$(m/s)&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].legend()</span><br><span class="line">    ax[<span class="number">1</span>].set_title(<span class="string">r&quot;Oscillation of $v$&quot;</span>)</span><br><span class="line">    plt.savefig(<span class="string">&quot;osillator.png&quot;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">show_oscillator_with_Euler_Cromer()</span><br></pre></td></tr></table></figure>
+<p>当$\alpha=1$时得到图像1</p>
+<p><img src="/img/excise3-4-1.png" alt="&quot;谐振子图像1&quot;"></p>
+<p>当$\alpha=3$时得到图像2</p>
+<p><img src="/img/excise3-4-2.png" alt="&quot;谐振子图像2&quot;"></p>
+<h3 id="考虑振幅与周期的关系"><a href="#考虑振幅与周期的关系" class="headerlink" title="考虑振幅与周期的关系"></a>考虑振幅与周期的关系</h3><p>接下来我们给simple_oscillator类增加一个calculate_period()函数，用来计算谐振子的周期</p>
+<blockquote>
+<p>calculate_period() 是通过判断$x$是否在初始位置附近来确定周期大小</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Simulation of oscillators with Euler Cromer</span></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># declare contants</span></span><br><span class="line">k=<span class="number">1</span></span><br><span class="line">dt = <span class="number">0.1</span></span><br><span class="line">max_steps = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">simple_oscillator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, distance0=<span class="number">0</span>, velocity0=<span class="number">0</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.distance = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.velocity = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.t = np.zeros(max_steps + <span class="number">1</span>, dtype = np.float64)</span><br><span class="line">        <span class="variable language_">self</span>.distance[<span class="number">0</span>] = distance0</span><br><span class="line">        <span class="variable language_">self</span>.velocity[<span class="number">0</span>] = velocity0</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calculate</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_steps):</span><br><span class="line">            <span class="variable language_">self</span>.distance[i + <span class="number">1</span>], <span class="variable language_">self</span>.velocity[i + <span class="number">1</span>], <span class="variable language_">self</span>.t[i + <span class="number">1</span>] = <span class="variable language_">self</span>.move_one_step(<span class="variable language_">self</span>.distance[i], <span class="variable language_">self</span>.velocity[i], <span class="variable language_">self</span>.t[i])</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">move_one_step</span>(<span class="params">self, distance, velocity, t</span>):</span><br><span class="line">        _velocity = velocity - k*distance**<span class="number">3</span>*dt</span><br><span class="line">        _distance = distance + _velocity*dt</span><br><span class="line">        _t = t + dt</span><br><span class="line">        <span class="keyword">return</span> _distance, _velocity, _t</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_results</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.distance, <span class="variable language_">self</span>.velocity, <span class="variable language_">self</span>.t,<span class="variable language_">self</span>.period</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calculate_period</span>(<span class="params">self</span>):</span><br><span class="line">        period_list=[]</span><br><span class="line">        period_sum=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_steps):</span><br><span class="line">            <span class="variable language_">self</span>.distance[i + <span class="number">1</span>], <span class="variable language_">self</span>.velocity[i + <span class="number">1</span>], <span class="variable language_">self</span>.t[i + <span class="number">1</span>] = <span class="variable language_">self</span>.move_one_step(<span class="variable language_">self</span>.distance[i], <span class="variable language_">self</span>.velocity[i], <span class="variable language_">self</span>.t[i])</span><br><span class="line">            <span class="keyword">if</span> i&gt;=<span class="number">5</span> <span class="keyword">and</span> <span class="built_in">abs</span>(<span class="variable language_">self</span>.distance[i]-<span class="variable language_">self</span>.distance[<span class="number">0</span>]) &lt;= <span class="number">0.05</span> <span class="keyword">and</span> <span class="built_in">abs</span>(<span class="variable language_">self</span>.distance[i-<span class="number">1</span>]-<span class="variable language_">self</span>.distance[<span class="number">0</span>]) &gt;= <span class="number">0.05</span>:</span><br><span class="line">                period_list.append(i)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(period_list)):</span><br><span class="line">            <span class="keyword">if</span> i==<span class="number">0</span>:</span><br><span class="line">                period_sum+=period_list[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                period_sum+=period_list[i]-period_list[i-<span class="number">1</span>]</span><br><span class="line">        <span class="variable language_">self</span>.period=period_sum*dt/<span class="built_in">len</span>(period_list)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_oscillator_with_Euler_Cromer</span>():</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;./computational-physics-project/lecture-3/oscillator.json&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = json.load(f)</span><br><span class="line">    oscillator1 = simple_oscillator(data[<span class="string">&quot;oscillator&quot;</span>][<span class="string">&quot;oscillator1&quot;</span>][<span class="string">&quot;distance0&quot;</span>],</span><br><span class="line">                                data[<span class="string">&quot;oscillator&quot;</span>][<span class="string">&quot;oscillator1&quot;</span>][<span class="string">&quot;velocity0&quot;</span>])</span><br><span class="line">    oscillator1.calculate_period()</span><br><span class="line">    fig, ax = plt.subplots(<span class="number">2</span>, <span class="number">1</span>, layout=<span class="string">&quot;constrained&quot;</span>)</span><br><span class="line">    distance, velocity, t , period= oscillator1.get_results()</span><br><span class="line">    ax[<span class="number">0</span>].plot(t, distance, label=<span class="string">r&quot;$x$&quot;</span>)</span><br><span class="line">    ax[<span class="number">0</span>].<span class="built_in">set</span>(xlabel=<span class="string">&quot;t(s)&quot;</span>, ylabel=<span class="string">r&quot;$x$(m)&quot;</span>)</span><br><span class="line">    ax[<span class="number">0</span>].legend()</span><br><span class="line">    ax[<span class="number">0</span>].set_title(<span class="string">r&quot;Oscillation of $x$&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].plot(t, velocity, label=<span class="string">r&quot;$v$&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].<span class="built_in">set</span>(xlabel=<span class="string">&quot;t(s)&quot;</span>, ylabel=<span class="string">r&quot;$v$(m/s)&quot;</span>)</span><br><span class="line">    ax[<span class="number">1</span>].legend()</span><br><span class="line">    ax[<span class="number">1</span>].set_title(<span class="string">r&quot;Oscillation of $v$&quot;</span>)</span><br><span class="line">    plt.savefig(<span class="string">&quot;osillator.png&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(period)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">show_oscillator_with_Euler_Cromer()</span><br></pre></td></tr></table></figure>
+<p>模拟得到</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">振幅</th>
+<th style="text-align:center">周期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0.2</td>
+<td style="text-align:center">35.20</td>
+</tr>
+<tr>
+<td style="text-align:center">0.4</td>
+<td style="text-align:center">18.28</td>
+</tr>
+<tr>
+<td style="text-align:center">0.6</td>
+<td style="text-align:center">12.26</td>
+</tr>
+<tr>
+<td style="text-align:center">0.8</td>
+<td style="text-align:center">9.22</td>
+</tr>
+<tr>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">7.38</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>随着振幅增大，周期变小。</p>
+<blockquote>
+<p>一个直观的理解，当$\alpha&gt;1 $ 时，$-kx^\alpha$ 对 $x$ 更敏感，当$x$增大，波动会更强烈</p>
+</blockquote>
+<h3 id="理论解释"><a href="#理论解释" class="headerlink" title="理论解释"></a>理论解释</h3><p>对于前一个练习中 (3.9) 的非简谐振子，可以通过某些特殊函数来解析地获得振动周期关于 $\alpha$ 的一般值的关系。请进行这样的计算，并描述周期与振幅之间的关系如何取决于 $\alpha$ 的值。你能对这个结果给出一个物理解释吗？提示：如果将 (3.9) 的两边都乘以 $\frac{d x}{d t}$，然后对 $t$ 进行积分。这将导致速度和 x 之间的关系。</p>
+<script type="math/tex; mode=display">
+\frac{dv}{dt}=-kx^\alpha</script><p>变换为</p>
+<script type="math/tex; mode=display">
+\frac{dv}{dx}\frac{dx}{dt}=-kx^\alpha</script><script type="math/tex; mode=display">
+vdv=-kx^\alpha dx</script><p>积分得</p>
+<script type="math/tex; mode=display">
+\frac{1}{2}v^2=-\frac{k}{\alpha+1}x^{\alpha+1}\bigg |_{t=0}^{t=t}</script><p>再利用$v=\frac{dx}{dt}$</p>
+<script type="math/tex; mode=display">
+\frac{dx}{dt}=\sqrt{\frac{2k}{\alpha+1}(x^{\alpha+1}-x_0^{\alpha+1})}</script><script type="math/tex; mode=display">
+\frac{dx}{\sqrt{x^{\alpha+1}-x_0^{\alpha+1})}}=\sqrt{\frac{2k}{\alpha+1}}dt</script><p>这个积分无法解析表示，但是可以写成下式</p>
+<script type="math/tex; mode=display">
+x=F(\sqrt{\frac{2k}{\alpha+1}}t)</script><p>其中$F(x)$是一个周期函数</p>
+<p>那么$\sqrt{\frac{2k}{\alpha+1}}$随$\alpha$增大而减小，故周期增大</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://oldcabbage.fun">Ethan Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://oldcabbage.fun/2024/10/24/comphy-oscillator/">https://oldcabbage.fun/2024/10/24/comphy-oscillator/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://oldcabbage.fun" target="_blank">OldCabbage</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E7%89%A9%E7%90%86/">计算物理</a><a class="post-meta__tags" href="/tags/%E7%AE%80%E8%B0%90%E6%8C%AF%E5%8A%A8/">简谐振动</a></div><div class="post-share"><div class="social-share" data-image="https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2024/10/23/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%9D%87%E5%8C%80%E4%BB%8B%E8%B4%A8%E7%83%AD%E5%8A%9B%E5%AD%A6/" title="热力学与统计力学之均匀介质热力学"><img class="cover" src="https://images.pexels.com/photos/1647220/pexels-photo-1647220.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">热力学与统计力学之均匀介质热力学</div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Waline</span><span id="switch-btn"></span><span class="second-comment">Livere</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div><div><div id="lv-container" data-id="city" data-uid="MTAyMC82MDE5OS8zNjY2Nw=="></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/avatar-peel.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ethan Liu</div><div class="author-info-description">爱学物理的一个小男孩</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/old-cabbage" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:helloliu271828@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">创造新世界</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A8%E8%AE%BA%E8%AF%AF%E5%B7%AE%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">1.</span> <span class="toc-text">讨论误差的影响</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E5%8F%91%E6%95%A3%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.</span> <span class="toc-text">结果发散的原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Euler-Cromer%E6%96%B9%E6%B3%95%E8%BF%9B%E8%A1%8C%E6%A8%A1%E6%8B%9F"><span class="toc-number">3.</span> <span class="toc-text">使用Euler-Cromer方法进行模拟</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#alpha-1-%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">3.1.</span> <span class="toc-text">$\alpha&#x3D;1$ 的情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%80%83%E8%99%91%E6%8C%AF%E5%B9%85%E4%B8%8E%E5%91%A8%E6%9C%9F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">3.2.</span> <span class="toc-text">考虑振幅与周期的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E8%A7%A3%E9%87%8A"><span class="toc-number">3.3.</span> <span class="toc-text">理论解释</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/10/24/comphy-oscillator/" title="计算物理之简谐振动"><img src="https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算物理之简谐振动"/></a><div class="content"><a class="title" href="/2024/10/24/comphy-oscillator/" title="计算物理之简谐振动">计算物理之简谐振动</a><time datetime="2024-10-24T10:08:00.000Z" title="发表于 2024-10-24 18:08:00">2024-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/23/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%9D%87%E5%8C%80%E4%BB%8B%E8%B4%A8%E7%83%AD%E5%8A%9B%E5%AD%A6/" title="热力学与统计力学之均匀介质热力学"><img src="https://images.pexels.com/photos/1647220/pexels-photo-1647220.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="热力学与统计力学之均匀介质热力学"/></a><div class="content"><a class="title" href="/2024/10/23/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%9D%87%E5%8C%80%E4%BB%8B%E8%B4%A8%E7%83%AD%E5%8A%9B%E5%AD%A6/" title="热力学与统计力学之均匀介质热力学">热力学与统计力学之均匀介质热力学</a><time datetime="2024-10-23T11:02:00.000Z" title="发表于 2024-10-23 19:02:00">2024-10-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/20/Hoomd-blue/" title="Hoomd-blue Two Dimension Particles Simulation"><img src="https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hoomd-blue Two Dimension Particles Simulation"/></a><div class="content"><a class="title" href="/2024/10/20/Hoomd-blue/" title="Hoomd-blue Two Dimension Particles Simulation">Hoomd-blue Two Dimension Particles Simulation</a><time datetime="2024-10-20T13:08:00.000Z" title="发表于 2024-10-20 21:08:00">2024-10-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/20/we-are-the-world/" title="We Are the World"><img src="/img/we-are-the-world.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="We Are the World"/></a><div class="content"><a class="title" href="/2024/10/20/we-are-the-world/" title="We Are the World">We Are the World</a><time datetime="2024-10-20T12:02:21.264Z" title="发表于 2024-10-20 20:02:21">2024-10-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By Ethan Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (false){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  let initFn = window.walineFn || null
+
+  const initWaline = (Fn) => {
+    const waline = Fn(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://oldcabbage-sever.vercel.app',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      path: window.location.pathname,
+      comment: false,
+    }, null))
+
+    const destroyWaline = () => {
+      waline.destroy()
+    }
+
+    btf.addGlobalFn('pjaxSendOnce', destroyWaline, 'destroyWaline')
+  }
+
+  const loadWaline = () => {
+    if (initFn) initWaline(initFn)
+    else {
+      btf.getCSS('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.css')
+        .then(() => import('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.js'))
+        .then(({ init }) => {
+          initFn = init || Waline.init
+          initWaline(initFn)
+          window.walineFn = initFn
+        })
+    }
+  }
+
+  if ('Waline' === 'Waline' || !false) {
+    if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+    else setTimeout(loadWaline, 0)
+  } else {
+    window.loadOtherComment = loadWaline
+  }
+})()</script><script>(()=>{
+  const loadLivere = () => {
+    if (typeof LivereTower === 'object') window.LivereTower.init()
+    else {
+      (function(d, s) {
+          var j, e = d.getElementsByTagName(s)[0];
+          if (typeof LivereTower === 'function') { return; }
+          j = d.createElement(s);
+          j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+          j.async = true;
+          e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    }
+  }
+
+  if ('Waline' === 'Livere' || !false) {
+    if (false) btf.loadComment(document.getElementById('lv-container'), loadLivere)
+    else loadLivere()
+  } else {
+    window.loadOtherComment = loadLivere
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="12757056128" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-volume="0.2" data-order="random"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      pjax.loadUrl('/404.html')
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
