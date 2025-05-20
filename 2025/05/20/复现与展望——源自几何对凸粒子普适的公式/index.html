@@ -1,0 +1,387 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>复现与展望——源自几何对凸粒子普适的公式 | OldCabbage</title><meta name="author" content="Ethan Liu"><meta name="copyright" content="Ethan Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在向粒子群中插入一个额外的粒子的概率和粒子群的尺寸分布函数间存在一个基于统计力学推导而来的准确的公式。我们使用HOOMD-blue软件包对三角形、圆形、方形粒子进行模拟测试，结果不出预料的发现插入粒子的概率和尺寸分布函数之间的十分准确的关联。这个研究揭露出对于凸粒子的几何关系与统计力学中的熵、压力、化学势等物理概念之间微妙的关联。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="复现与展望——源自几何对凸粒子普适的公式">
+<meta property="og:url" content="https://oldcabbage.fun/2025/05/20/%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F/index.html">
+<meta property="og:site_name" content="OldCabbage">
+<meta property="og:description" content="在向粒子群中插入一个额外的粒子的概率和粒子群的尺寸分布函数间存在一个基于统计力学推导而来的准确的公式。我们使用HOOMD-blue软件包对三角形、圆形、方形粒子进行模拟测试，结果不出预料的发现插入粒子的概率和尺寸分布函数之间的十分准确的关联。这个研究揭露出对于凸粒子的几何关系与统计力学中的熵、压力、化学势等物理概念之间微妙的关联。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png">
+<meta property="article:published_time" content="2025-05-20T11:21:00.000Z">
+<meta property="article:modified_time" content="2025-05-20T11:50:35.413Z">
+<meta property="article:author" content="Ethan Liu">
+<meta property="article:tag" content="物理">
+<meta property="article:tag" content="热力学与统计力学">
+<meta property="article:tag" content="HOOMD-blue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png"><link rel="shortcut icon" href="/img/cabbage-peel.png"><link rel="canonical" href="https://oldcabbage.fun/2025/05/20/%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        if (name && globalFn[key][name]) return
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0e1deb15fac28b40c47a6627b066d96a";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '复现与展望——源自几何对凸粒子普适的公式',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-05-20 19:50:35'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(https://images.pexels.com/photos/28939359/pexels-photo-28939359.jpeg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar-peel.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 影音</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/cabbage-large-peel.png" alt="Logo"><span class="site-name">OldCabbage</span></a><a class="nav-page-title" href="/"><span class="site-name">复现与展望——源自几何对凸粒子普适的公式</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 影音</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">复现与展望——源自几何对凸粒子普适的公式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-05-20T11:21:00.000Z" title="发表于 2025-05-20 19:21:00">2025-05-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-20T11:50:35.413Z" title="更新于 2025-05-20 19:50:35">2025-05-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%83%AD%E5%8A%9B%E5%AD%A6%E4%B8%8E%E7%BB%9F%E8%AE%A1%E5%8A%9B%E5%AD%A6/">热力学与统计力学</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="复现与展望——源自几何对凸粒子普适的公式"><a href="#复现与展望——源自几何对凸粒子普适的公式" class="headerlink" title="复现与展望——源自几何对凸粒子普适的公式"></a>复现与展望——源自几何对凸粒子普适的公式</h1><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>我们讨论的硬凸粒子系统，其相互作用势是一种排斥性的$\delta$势，具有一定的“纯粹性”。原论文将注意力放在一个源自几何关系的对所有凸粒子皆成立的恒等式上，采用python的软件包HOOMD-bule完成对问题的模拟，我也跟随相同的路线进行工作。在复现完成后，我将视线放到凹粒子的群上，它们的研究方法相似，不过凹粒子的属性更加多样，许多常见的物品实际上是凹的，如字母H，五角星等等。</p>
+<p>我们回到关键的恒等式上来</p>
+<script type="math/tex; mode=display">
+\lim_{\substack{N \to \infty \\ N/V =\rho}} \, \frac{1}{N} \ln (\prod_{i=1}^{N} \frac{P_{N+1}}{P_{i}} ) = -\frac{\tilde{s}(0+) }{2d}.</script><p>指定分子数密度N，调整密度为$N/V=\rho$ ，此时固定V，可以开始研究从1到N的粒子数在这样的V下随机组合的粒子群，我们在某些数目的粒子群中执行插入一个粒子的操作从而得到插入粒子的概率$P_i$，即为在$i-1$个粒子的群中插入一个粒子的成功率。</p>
+<p>等式右侧的$\tilde{s}(x)$为尺寸分布函数，在原论文中有详细介绍。$\mathrm{d}$则是空间的维度。</p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>在conda环境下进行HOOMD-blue包的安装，具体参见<a target="_blank" rel="noopener" href="https://hoomd-blue.readthedocs.io/en/v5.1.1/installation.html">HOOMD-blue的安装教程</a>。需要注意的是HOOMd-blue需要Linux环境，并且在利用<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/wsl/install">WSL</a>实现的虚拟机无法调用GPU进行运算，代码开源于<a target="_blank" rel="noopener" href="https://github.com/glotzerlab/hoomd-blue">github</a>,可以通过终端命令下载源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/glotzerlab/hoomd-blue.git</span><br></pre></td></tr></table></figure>
+<h2 id="代码构建"><a href="#代码构建" class="headerlink" title="代码构建"></a>代码构建</h2><h3 id="主体架构"><a href="#主体架构" class="headerlink" title="主体架构"></a>主体架构</h3><p>完成论文的代码开源于<a target="_blank" rel="noopener" href="https://github.com/old-cabbage/Particle-Move-with-HOOMD-blue">https://github.com/old-cabbage/Particle-Move-with-HOOMD-blue</a>，架构如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Particle/</span><br><span class="line">├─concave    </span><br><span class="line">├─convex  </span><br><span class="line">├─mixture  </span><br><span class="line">└─result</span><br><span class="line">    ├─concave</span><br><span class="line">    ├─convex</span><br><span class="line">    └─sdf</span><br><span class="line">        ├─concave     </span><br><span class="line">        ├─convex      </span><br><span class="line">        └─mixture</span><br></pre></td></tr></table></figure>
+<p>system.py文件将粒子群本身作为一个类，将论文所需要的操作变为类本身的函数，可以大大简化调整关键参数的修改过程。主要需要修改的文件是 particle-move. py，通过调整相应的粒子种类，实验需要模拟的次数来实现。这里我们的粒子群实际是以.gsd文件保存的，由于需要生成大量的.gsd文件，故采用generate.py文件独立地生成粒子群，可以减少主程序的负担。result文件夹存放着蒙特卡洛模拟的结果，concave、convex文件夹中都有进行数据分析所需要的文件，可以快捷进行数据的可视化。</p>
+<h3 id="关键方法"><a href="#关键方法" class="headerlink" title="关键方法"></a>关键方法</h3><h4 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h4><p>实现项目的计算量较大，一般需要在高算力服务器上进行，且很多工作是可以并行而不影响结果的，故文件都进行了适当的MPI并行处理，</p>
+<p>在System类中，采用了两种方法生成粒子群，一种是直接让粒子在既定密度下有序排列，再执行打乱操作，增大粒子群的熵，适合密度不大和凸粒子的情况；另一种则是利用hoomd.hpmc.update中的QuickCompress类，添加其到Simulation.operations.updaters方法中，通过指定压缩方式和速度，可以实现逐步的将密度较小的体系压缩成高密度体系，并且体系的熵自然的增高。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#压缩体系</span><br><span class="line">initial_box = self.simulation.state.box</span><br><span class="line">final_box = hoomd.Box.from_box(initial_box)</span><br><span class="line">final_box.volume = self.simulation.state.N_particles * self.particle_area / self.packing_density</span><br><span class="line">compress = hoomd.hpmc.update.QuickCompress(</span><br><span class="line">    trigger=hoomd.trigger.Periodic(10), target_box=final_box</span><br><span class="line">)</span><br><span class="line">self.simulation.operations.updaters.append(compress)</span><br><span class="line">periodic = hoomd.trigger.Periodic(10)</span><br><span class="line">tune = hoomd.hpmc.tune.MoveSize.scale_solver(</span><br><span class="line">    moves=[&quot;a&quot;, &quot;d&quot;],</span><br><span class="line">    target=0.2,</span><br><span class="line">    trigger=periodic,</span><br><span class="line">    max_translation_move=5,</span><br><span class="line">    max_rotation_move=5,</span><br><span class="line">)</span><br><span class="line">self.simulation.operations.tuners.append(tune)</span><br></pre></td></tr></table></figure>
+<h4 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h4><p>HOOMD-blue的hpmc中提供了FreeVolume方法计算体系的剩余体积，它是通过不断投入粒子实现的，故通过简单改变投入粒子的类型再对结果做一些处理即可得到需要的成功率</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def random_insert(self,insert_times):</span><br><span class="line">self.fv=hoomd.hpmc.compute.FreeVolume(test_particle_type=self.shape, </span><br><span class="line">num_samples=insert_times)</span><br><span class="line">self.simulation.operations.computes.append(self.fv)</span><br><span class="line">self.success_insert = round(self.fv.free_volume * </span><br><span class="line">insert_times / self.simulation.state.box.volume)</span><br><span class="line">return self.success_insert</span><br></pre></td></tr></table></figure>
+<p>在主程序中通过循环实现插入并更新体系的蒙特卡洛操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">iterations = 1000              # 循环次数</span><br><span class="line">moves_per_cycle = 5            # 每个循环中移动的步数</span><br><span class="line">insertions_per_cycle = 100000    # 每个循环中插入的粒子尝试次数</span><br><span class="line"></span><br><span class="line">total_success = 0</span><br><span class="line">total_attempts = 0</span><br><span class="line"></span><br><span class="line">print(&quot;\n开始进行循环模拟和插入测试...&quot;)</span><br><span class="line">simulation_start_time = time.time()</span><br><span class="line">for cycle in range(1, iterations + 1):</span><br><span class="line">    # 进行移动</span><br><span class="line">    system.simulation.run(moves_per_cycle)</span><br><span class="line">    </span><br><span class="line">    # 进行插入尝试  </span><br><span class="line">    success = system.random_insert(</span><br><span class="line">        insert_times=insertions_per_cycle</span><br><span class="line">    )</span><br><span class="line">    total_success += success</span><br><span class="line">    total_attempts += insertions_per_cycle</span><br><span class="line"></span><br><span class="line">    # 可选：打印每个循环的结果</span><br><span class="line">    if cycle % (iterations // 10 ) == 0:</span><br><span class="line">        simulation_interval_time = time.time()</span><br><span class="line">        print(f&quot;循环 &#123;cycle&#125;/&#123;iterations&#125;: 成功插入 &#123;success&#125;/&#123;insertions_per_cycle&#125; 个粒子;</span><br><span class="line">        耗时: &#123;simulation_interval_time - simulation_start_time:.2f&#125; 秒&quot;)</span><br><span class="line"></span><br><span class="line">simulation_end_time = time.time()</span><br><span class="line">print(f&quot;\n堆叠密度为&#123;packing_density_0&#125;，粒子数为&#123;num_particles&#125;的循环模拟和插入测试完成，</span><br><span class="line">耗时: &#123;simulation_end_time - simulation_start_time:.2f&#125; 秒&quot;)</span><br><span class="line"># 计算最终的成功插入概率</span><br><span class="line">final_probability = total_success / total_attempts if total_attempts &gt; 0 else 0.0</span><br><span class="line">print(f&quot;最终插入成功概率: &#123;final_probability * 100:.5f&#125;% (&#123;total_success&#125;/&#123;total_attempts&#125;) ;</span><br><span class="line">ln(Pi)=&#123;math.log(final_probability)&#125;&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="SDF计算"><a href="#SDF计算" class="headerlink" title="SDF计算"></a>SDF计算</h4><p>SDF的计算调用了HOOMD-blue的SDF函数，可以获得曲线，也可以直接SDF.P来直接计算SDF的截距，在system文件中通过以下操作实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">def calculate_sdf(self,sdf_mc,sdf_xmax,sdf_dx,sdf_each_run):</span><br><span class="line">    self.total_sdf_sdfcompression=np.zeros(int(sdf_xmax/sdf_dx))</span><br><span class="line">    self.total_sdf_sdfexpansion=np.zeros(int(sdf_xmax/sdf_dx))</span><br><span class="line">    self.sdf_compute = hoomd.hpmc.compute.SDF(xmax=sdf_xmax, dx=sdf_dx)</span><br><span class="line">    self.simulation.operations.computes.append(self.sdf_compute)</span><br><span class="line">    #sdf_start_time=time.time()</span><br><span class="line">    print(&quot;sdf循环开始&quot;)</span><br><span class="line">    for i in range(sdf_mc):</span><br><span class="line">        self.simulation.run(sdf_each_run)</span><br><span class="line">        self.total_sdf_sdfcompression += self.sdf_compute.sdf_compression</span><br><span class="line">        self.total_sdf_sdfexpansion += self.sdf_compute.sdf_expansion</span><br><span class="line">        #if (i+1)%(sdf_mc//10)==0:</span><br><span class="line">        #    sdf_interval_time=time.time()</span><br><span class="line">        #    print(f&quot;循环已经进行了&#123;i+1&#125;次,耗时&#123;sdf_interval_time-sdf_start_time:.2f&#125;秒&quot;)</span><br><span class="line">    self.total_sdf_xcompression = self.sdf_compute.x_compression</span><br><span class="line">    self.total_sdf_xexpansion = self.sdf_compute.x_expansion</span><br><span class="line">    self.total_sdf_sdfcompression /= sdf_mc</span><br><span class="line">    self.total_sdf_sdfexpansion /= sdf_mc</span><br><span class="line">    return self.total_sdf_xcompression,self.total_sdf_xexpansion,self.total_sdf_sdfcompression,self.total_sdf_sdfexpansion</span><br></pre></td></tr></table></figure>
+<p>\section{凸粒子的实验结果}</p>
+<h3 id="插入概率"><a href="#插入概率" class="headerlink" title="插入概率"></a>插入概率</h3><p>与原论文相同，采用N=5000个粒子，每个数据点经过$10^9$以上次插入，得到$\mathrm{ln}(P_i)$随着粒子数增加的图线，当体系的密度过大时，$P_i$ 以极快的速度减小，在高密度体系中插入粒子十分困难，概率难以计算。</p>
+<p><img src="/public/img/particles/result.png" alt=""></p>
+<p><img src="/public/img/particles/convex-fit-0.5.png" alt="四次曲线拟合密度为0.5体系"></p>
+<p>特别的，用四次曲线拟合$\mathrm{ln}(P_i)$可以获取曲线的部分性质，这里密度为0.5的曲线的四次拟合与论文中的数据相符合。</p>
+<script type="math/tex; mode=display">
+    \mathrm{ln}(P_i)=-1.712\times10^{-15} i^4 - 1.697\times 10^{-11} i^3 - 7.424\times 10^{-8} i^2 - 5.721\times 10^{-3} i</script><h3 id="SDF"><a href="#SDF" class="headerlink" title="SDF"></a>SDF</h3><p>SDF计算结果的关键的横坐标与原论文相符合，这里亦选取密度为0.5的体系来分析，左图为随机选取了$10^4$个体系的SDF结果可视化的散点图，右图为根据原数据（$10^{9}$次SDF数值）而拟合出的正态曲线，与预期的标准正态曲线十分接近。</p>
+<p><img src="/public/img/particles/sdf_analysis.png" alt="SDF数据的分析"></p>
+<h2 id="凹粒子的展望"><a href="#凹粒子的展望" class="headerlink" title="凹粒子的展望"></a>凹粒子的展望</h2><p>凹粒子由于粒子形状复杂，并且库的优化弱于凸粒子，故计算难度远大于凸粒子，由于凹粒子的形态复杂，要研究凹粒子的问题势必要分析多种凹粒子的性质。一个与凸粒子不同地方是凹粒子的SDF不只有膨胀的SDF，还有压缩的SDF，在我们研究的恒等式上要加上一项。</p>
+<script type="math/tex; mode=display">
+\lim_{\substack{N \to \infty \\ N/V =\rho}} \, \frac{1}{N} \ln (\prod_{i=1}^{N} \frac{P_{N+1}}{P_{i}} ) = -\frac{\tilde{s}(0+) + \tilde{s}(0-)}{2d}.</script><p>可是，这一项并不一定在所有凹粒子上都显现，对于H粒子，由于它非常的“凹”，可以观测到$\tilde{s}(0-)$项；但是对于V字粒子，它不是很“凹”，额外的这一项完全无法对压缩造成影响</p>
+<p><img src="/public/img/particles/H粒子.png" alt="H字母形状的粒子"><br><img src="/public\img\particles/v粒子.png" alt="方形一侧以V字凹入的粒子"></p>
+<p>对V字粒子的结果，我们进行了较为精确的计算，结果与公式符合的很好；对于H粒子，我们进行了定性的计算，发现密度较大时插入概率十分小，SDF的膨胀项对结果产生了显著的影响。由于计算能力受限，对个别密度的验证符合公式</p>
+<p><img src="/public/img/particles/P.png" alt="V字凹粒子插入概率"><br><img src="/public/img/particles/sdf05.png" alt="密度为0.5的SDF曲线"></p>
+<p>这项研究揭示了硬粒子系统中几何学和热力学之间复杂的相互作用。从熵、压强和化学势之间联系的基本热力学关系中出发，走到一个意料之外的地方，建立了一种对各种粒子成立的等式。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://oldcabbage.fun">Ethan Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://oldcabbage.fun/2025/05/20/%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F/">https://oldcabbage.fun/2025/05/20/%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://oldcabbage.fun" target="_blank">OldCabbage</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%89%A9%E7%90%86/">物理</a><a class="post-meta__tags" href="/tags/%E7%83%AD%E5%8A%9B%E5%AD%A6%E4%B8%8E%E7%BB%9F%E8%AE%A1%E5%8A%9B%E5%AD%A6/">热力学与统计力学</a><a class="post-meta__tags" href="/tags/HOOMD-blue/">HOOMD-blue</a></div><div class="post-share"><div class="social-share" data-image="https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2024/10/24/comphy-oscillator/" title="计算物理之简谐振动"><img class="cover" src="https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计算物理之简谐振动</div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Waline</span><span id="switch-btn"></span><span class="second-comment">Livere</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div><div><div id="lv-container" data-id="city" data-uid="MTAyMC82MDE5OS8zNjY2Nw=="></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/avatar-peel.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ethan Liu</div><div class="author-info-description">不识庐山真面目，自缘身在此山中</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/old-cabbage" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:helloliu271828@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">身循曲率知经纬，心印测地现真颜</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">复现与展望——源自几何对凸粒子普适的公式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%9E%84%E5%BB%BA"><span class="toc-number">1.3.</span> <span class="toc-text">代码构建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-number">1.3.1.</span> <span class="toc-text">主体架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.2.</span> <span class="toc-text">关键方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">并行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">插入操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SDF%E8%AE%A1%E7%AE%97"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">SDF计算</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%A6%82%E7%8E%87"><span class="toc-number">1.3.3.</span> <span class="toc-text">插入概率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SDF"><span class="toc-number">1.3.4.</span> <span class="toc-text">SDF</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%B9%E7%B2%92%E5%AD%90%E7%9A%84%E5%B1%95%E6%9C%9B"><span class="toc-number">1.4.</span> <span class="toc-text">凹粒子的展望</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/05/20/%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F/" title="复现与展望——源自几何对凸粒子普适的公式"><img src="https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="复现与展望——源自几何对凸粒子普适的公式"/></a><div class="content"><a class="title" href="/2025/05/20/%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F/" title="复现与展望——源自几何对凸粒子普适的公式">复现与展望——源自几何对凸粒子普适的公式</a><time datetime="2025-05-20T11:21:00.000Z" title="发表于 2025-05-20 19:21:00">2025-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/24/comphy-oscillator/" title="计算物理之简谐振动"><img src="https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算物理之简谐振动"/></a><div class="content"><a class="title" href="/2024/10/24/comphy-oscillator/" title="计算物理之简谐振动">计算物理之简谐振动</a><time datetime="2024-10-24T10:08:00.000Z" title="发表于 2024-10-24 18:08:00">2024-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/20/Hoomd-blue/" title="Hoomd-blue Two Dimension Particles Simulation"><img src="https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hoomd-blue Two Dimension Particles Simulation"/></a><div class="content"><a class="title" href="/2024/10/20/Hoomd-blue/" title="Hoomd-blue Two Dimension Particles Simulation">Hoomd-blue Two Dimension Particles Simulation</a><time datetime="2024-10-20T13:08:00.000Z" title="发表于 2024-10-20 21:08:00">2024-10-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/20/we-are-the-world/" title="We Are the World"><img src="/img/we-are-the-world.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="We Are the World"/></a><div class="content"><a class="title" href="/2024/10/20/we-are-the-world/" title="We Are the World">We Are the World</a><time datetime="2024-10-20T12:02:21.264Z" title="发表于 2024-10-20 20:02:21">2024-10-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Ethan Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (false){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  let initFn = window.walineFn || null
+
+  const initWaline = (Fn) => {
+    const waline = Fn(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://oldcabbage-sever.vercel.app',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      path: window.location.pathname,
+      comment: false,
+    }, null))
+
+    const destroyWaline = () => {
+      waline.destroy()
+    }
+
+    btf.addGlobalFn('pjaxSendOnce', destroyWaline, 'destroyWaline')
+  }
+
+  const loadWaline = () => {
+    if (initFn) initWaline(initFn)
+    else {
+      btf.getCSS('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.css')
+        .then(() => import('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.js'))
+        .then(({ init }) => {
+          initFn = init || Waline.init
+          initWaline(initFn)
+          window.walineFn = initFn
+        })
+    }
+  }
+
+  if ('Waline' === 'Waline' || !false) {
+    if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+    else setTimeout(loadWaline, 0)
+  } else {
+    window.loadOtherComment = loadWaline
+  }
+})()</script><script>(()=>{
+  const loadLivere = () => {
+    if (typeof LivereTower === 'object') window.LivereTower.init()
+    else {
+      (function(d, s) {
+          var j, e = d.getElementsByTagName(s)[0];
+          if (typeof LivereTower === 'function') { return; }
+          j = d.createElement(s);
+          j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+          j.async = true;
+          e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    }
+  }
+
+  if ('Waline' === 'Livere' || !false) {
+    if (false) btf.loadComment(document.getElementById('lv-container'), loadLivere)
+    else loadLivere()
+  } else {
+    window.loadOtherComment = loadLivere
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="12757056128" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-volume="0.2" data-order="random"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      pjax.loadUrl('/404.html')
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
