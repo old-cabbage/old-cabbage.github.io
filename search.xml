@@ -89,7 +89,7 @@
       <link href="/2024/10/20/we-are-the-world/"/>
       <url>/2024/10/20/we-are-the-world/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>欢迎来到OldCabbage的博客</p><h1 id="此刻，世界由我们塑造"><a href="#此刻，世界由我们塑造" class="headerlink" title="此刻，世界由我们塑造"></a>此刻，世界由我们塑造</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;We Are the World!&quot;</span>)</span><br></pre></td></tr></table></figure><p>我叫Ethan<br>这个博客记录我的思考、对世界的认识，Ethan主业是物理，所以关于物理的内容会稍微专业，其他的内容是半外行的。</p><p><img src="https://images.nationalgeographic.org/image/upload/v1652341068/EducationHub/photos/ocean-waves.jpg" alt="图1" title="大海"></p>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>欢迎来到OldCabbage的博客</p><h1 id="此刻"><a href="#此刻" class="headerlink" title="此刻"></a>此刻</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hello World!&quot;</span>)</span><br></pre></td></tr></table></figure><p>我叫Ethan<br>这个博客记录我的思考、对世界的认识。</p><p><img src="https://images.nationalgeographic.org/image/upload/v1652341068/EducationHub/photos/ocean-waves.jpg" alt="图1" title="大海"></p>]]></content>
       
       
       
@@ -98,17 +98,6 @@
     
   
   
-    
-    
-    <entry>
-      <title>电影</title>
-      <link href="/movies/index.html"/>
-      <url>/movies/index.html</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
-      
-    </entry>
-    
     
     
     <entry>
@@ -137,6 +126,17 @@
       <title>音乐</title>
       <link href="/music/index.html"/>
       <url>/music/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>电影</title>
+      <link href="/movies/index.html"/>
+      <url>/movies/index.html</url>
       
         <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
       
