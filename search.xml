@@ -103,33 +103,22 @@
     
     
     <entry>
-      <title>图库</title>
-      <link href="/Gallery/index.html"/>
-      <url>/Gallery/index.html</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="gallery-group">  <img class="gallery-group-img no-lightbox" src='https://i.postimg.cc/hvXVFbL8/20250903160228-9-78.jpg' alt="Group Image Gallery">  <figcaption>  <div class="gallery-group-name">七夕</div>  <p>Me and You 2025.8.29</p>  <a href='/Gallery/qixi'></a>  </figcaption>  </figure>  ]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>分类</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>简历</title>
       <link href="/CV/index.html"/>
       <url>/CV/index.html</url>
       
         <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><iframe src="/CV/Chengxin Liu CV.pdf" width="100%" height="900" style="border:0;"></iframe></p><p><iframe src="/CV/刘诚信简历.pdf" width="100%" height="900" style="border:0;"></iframe><br><a href="/CV/Chengxin Liu CV.pdf" download>下载我的英文版简历（PDF）</a><br><a href="/CV/刘诚信简历.pdf" download>下载我的中文版简历（PDF）</a></p>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>图库</title>
+      <link href="/Gallery/index.html"/>
+      <url>/Gallery/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="gallery-group">  <img class="gallery-group-img no-lightbox" src='https://i.postimg.cc/hvXVFbL8/20250903160228-9-78.jpg' alt="Group Image Gallery">  <figcaption>  <div class="gallery-group-name">七夕</div>  <p>Me and You 2025.8.29</p>  <a href='/Gallery/qixi'></a>  </figcaption>  </figure>  ]]></content>
       
     </entry>
     
@@ -147,9 +136,9 @@
     
     
     <entry>
-      <title>音乐</title>
-      <link href="/music/index.html"/>
-      <url>/music/index.html</url>
+      <title>分类</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       
         <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
       
@@ -180,11 +169,22 @@
     
     
     <entry>
+      <title>音乐</title>
+      <link href="/music/index.html"/>
+      <url>/music/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>七夕</title>
       <link href="/Gallery/qixi/index.html"/>
       <url>/Gallery/qixi/index.html</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><div class="gallery-container" data-type="data" data-button="">      <div class="gallery-items">[{"url":"https://i.postimg.cc/gr9XC9kd/20250903160247-16-78.jpg","alt":"Us and Flower"},{"url":"https://i.postimg.cc/br4kqDg7/20250903160227-8-78.jpg","alt":""},{"url":"https://i.postimg.cc/5tpz6kpq/20250903160239-13-78.jpg","alt":""},{"url":"https://i.postimg.cc/bvqbYj0w/20250903160238-12-78.jpg","alt":""},{"url":"https://i.postimg.cc/8556WB08/20250903160240-14-78.jpg","alt":""},{"url":"https://i.postimg.cc/3x5m6Gdp/20250903160236-11-78.jpg","alt":""},{"url":"https://i.postimg.cc/nrHgjJgc/20250903162102-24-78.jpg)](https://postimg.cc/gXTNQfGf","alt":"20250903162102-24-78.jpg"},{"url":"https://i.postimg.cc/wMCN4qz9/20250903183304-25-78.jpg)](https://postimg.cc/7JNbfybR","alt":"20250903183304-25-78.jpg"},{"url":"https://i.postimg.cc/g2qh4bTP/20250903183309-26-78.jpg)](https://postimg.cc/Yv0jqZ7X","alt":"20250903183309-26-78.jpg"},{"url":"https://i.postimg.cc/g2qh4bTP/20250903183309-26-78.jpg)](https://postimg.cc/Yv0jqZ7X","alt":"20250903183309-26-78.jpg"},{"url":"https://i.postimg.cc/g2qh4bTP/20250903183309-26-78.jpg)](https://postimg.cc/Yv0jqZ7X","alt":"20250903183309-26-78.jpg"},{"url":"https://i.postimg.cc/g2qh4bTP/20250903183309-26-78.jpg)](https://postimg.cc/Yv0jqZ7X","alt":"20250903183309-26-78.jpg"},{"url":"https://i.postimg.cc/g2qh4bTP/20250903183309-26-78.jpg)](https://postimg.cc/Yv0jqZ7X","alt":"20250903183309-26-78.jpg"},{"url":"https://i.postimg.cc/g2qh4bTP/20250903183309-26-78.jpg)](https://postimg.cc/Yv0jqZ7X","alt":"20250903183309-26-78.jpg"}]</div>    </div>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><div class="gallery-container" data-type="data" data-button="">      <div class="gallery-items">[{"url":"https://i.postimg.cc/gr9XC9kd/20250903160247-16-78.jpg","alt":"Us and Flower"},{"url":"https://i.postimg.cc/br4kqDg7/20250903160227-8-78.jpg","alt":""},{"url":"https://i.postimg.cc/5tpz6kpq/20250903160239-13-78.jpg","alt":""},{"url":"https://i.postimg.cc/bvqbYj0w/20250903160238-12-78.jpg","alt":""},{"url":"https://i.postimg.cc/8556WB08/20250903160240-14-78.jpg","alt":""},{"url":"https://i.postimg.cc/3x5m6Gdp/20250903160236-11-78.jpg","alt":""},{"url":"https://i.postimg.cc/nrHgjJgc/20250903162102-24-78.jpg)](https://postimg.cc/gXTNQfGf","alt":"20250903162102-24-78.jpg"},{"url":"https://i.postimg.cc/wMCN4qz9/20250903183304-25-78.jpg)](https://postimg.cc/7JNbfybR","alt":"20250903183304-25-78.jpg"},{"url":"https://i.postimg.cc/CxVDjxJN/20250903183311-27-78.jpg)](https://postimg.cc/nC0CxZyj","alt":"20250903183311-27-78.jpg"},{"url":"https://i.postimg.cc/ZY265cdX/20250903183312-28-78.jpg)](https://postimg.cc/pyQm0KkB","alt":"20250903183312-28-78.jpg"},{"url":"https://i.postimg.cc/63TG9259/20250903183314-29-78.jpg)](https://postimg.cc/yg4NjNZ5","alt":"20250903183314-29-78.jpg"},{"url":"https://i.postimg.cc/cJxnbkpt/20250903183316-30-78.jpg)](https://postimg.cc/v4KT1hHG","alt":"20250903183316-30-78.jpg"},{"url":"https://i.postimg.cc/HL6yD4mZ/20250903183319-31-78.jpg)](https://postimg.cc/xkbCLmcM","alt":"20250903183319-31-78.jpg"}]</div>    </div>]]></content>
       
     </entry>
     
