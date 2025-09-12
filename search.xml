@@ -125,17 +125,6 @@
     
     
     <entry>
-      <title>分类</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>友链</title>
       <link href="/link/index.html"/>
       <url>/link/index.html</url>
@@ -147,9 +136,9 @@
     
     
     <entry>
-      <title>电影</title>
-      <link href="/movies/index.html"/>
-      <url>/movies/index.html</url>
+      <title>分类</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       
         <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
       
@@ -169,11 +158,22 @@
     
     
     <entry>
-      <title>在读论文</title>
-      <link href="/papers/index.html"/>
-      <url>/papers/index.html</url>
+      <title>电影</title>
+      <link href="/movies/index.html"/>
+      <url>/movies/index.html</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="2025-8"><a href="#2025-8" class="headerlink" title="2025.8"></a>2025.8</h2>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>专业</title>
+      <link href="/major/index.html"/>
+      <url>/major/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="gallery-group">  <img class="gallery-group-img no-lightbox" src='https://i.postimg.cc/yNSXMRDr/Pathria-Beale.png' alt="Group Image Gallery">  <figcaption>  <div class="gallery-group-name">Statistic Mechanics</div>  <p>热力学与统计力学</p>  <a href='/major/Thermo'></a>  </figcaption>  </figure>  ]]></content>
       
     </entry>
     
@@ -191,11 +191,11 @@
     
     
     <entry>
-      <title>专业</title>
-      <link href="/major/index.html"/>
-      <url>/major/index.html</url>
+      <title>在读论文</title>
+      <link href="/papers/index.html"/>
+      <url>/papers/index.html</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="gallery-group">  <img class="gallery-group-img no-lightbox" src='https://i.postimg.cc/yNSXMRDr/Pathria-Beale.png' alt="Group Image Gallery">  <figcaption>  <div class="gallery-group-name">Statistic Mechanics</div>  <p>热力学与统计力学</p>  <a href='/major/Thermo'></a>  </figcaption>  </figure>  ]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="2025-8"><a href="#2025-8" class="headerlink" title="2025.8"></a>2025.8</h2>]]></content>
       
     </entry>
     
@@ -217,7 +217,7 @@
       <link href="/major/Thermo/index.html"/>
       <url>/major/Thermo/index.html</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>一些有用的资源</p><p>David Tong 讲义 <a href="https://www.damtp.cam.ac.uk/user/tong/statphys.html">https://www.damtp.cam.ac.uk/user/tong/statphys.html</a></p>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>David Tong 讲义 <a href="https://www.damtp.cam.ac.uk/user/tong/statphys.html">https://www.damtp.cam.ac.uk/user/tong/statphys.html</a></p><p><a href="/Thermo/热力学与统计物理学 (胡承正).pdf" download>胡承正 热力学与统计力学</a></p>]]></content>
       
     </entry>
     
