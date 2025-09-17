@@ -103,17 +103,6 @@
     
     
     <entry>
-      <title>图库</title>
-      <link href="/Gallery/index.html"/>
-      <url>/Gallery/index.html</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="gallery-group">  <img class="gallery-group-img no-lightbox" src='https://i.postimg.cc/hvXVFbL8/20250903160228-9-78.jpg' alt="Group Image Gallery">  <figcaption>  <div class="gallery-group-name">七夕</div>  <p>Me and You 2025.8.29</p>  <a href='/Gallery/qixi'></a>  </figcaption>  </figure>  ]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>简历</title>
       <link href="/CV/index.html"/>
       <url>/CV/index.html</url>
@@ -125,11 +114,44 @@
     
     
     <entry>
+      <title>花卉</title>
+      <link href="/Flowers/index.html"/>
+      <url>/Flowers/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>分类</title>
       <link href="/categories/index.html"/>
       <url>/categories/index.html</url>
       
         <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>图库</title>
+      <link href="/Gallery/index.html"/>
+      <url>/Gallery/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="gallery-group">  <img class="gallery-group-img no-lightbox" src='https://i.postimg.cc/hvXVFbL8/20250903160228-9-78.jpg' alt="Group Image Gallery">  <figcaption>  <div class="gallery-group-name">七夕</div>  <p>Me and You 2025.8.29</p>  <a href='/Gallery/qixi'></a>  </figcaption>  </figure>  ]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>专业</title>
+      <link href="/major/index.html"/>
+      <url>/major/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="gallery-group">  <img class="gallery-group-img no-lightbox" src='https://i.postimg.cc/yNSXMRDr/Pathria-Beale.png' alt="Group Image Gallery">  <figcaption>  <div class="gallery-group-name">Statistic Mechanics</div>  <p>热力学与统计力学</p>  <a href='/major/Thermo'></a>  </figcaption>  </figure>  ]]></content>
       
     </entry>
     
@@ -158,28 +180,6 @@
     
     
     <entry>
-      <title>在读论文</title>
-      <link href="/papers/index.html"/>
-      <url>/papers/index.html</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="2025-8"><a href="#2025-8" class="headerlink" title="2025.8"></a>2025.8</h2>]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>专业</title>
-      <link href="/major/index.html"/>
-      <url>/major/index.html</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="gallery-group">  <img class="gallery-group-img no-lightbox" src='https://i.postimg.cc/yNSXMRDr/Pathria-Beale.png' alt="Group Image Gallery">  <figcaption>  <div class="gallery-group-name">Statistic Mechanics</div>  <p>热力学与统计力学</p>  <a href='/major/Thermo'></a>  </figcaption>  </figure>  ]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>音乐</title>
       <link href="/music/index.html"/>
       <url>/music/index.html</url>
@@ -202,11 +202,11 @@
     
     
     <entry>
-      <title>Statistic Mechanics</title>
-      <link href="/major/Thermo/index.html"/>
-      <url>/major/Thermo/index.html</url>
+      <title>在读论文</title>
+      <link href="/papers/index.html"/>
+      <url>/papers/index.html</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="一些资料"><a href="#一些资料" class="headerlink" title="一些资料"></a>一些资料</h2><p>David Tong 讲义 <a href="https://www.damtp.cam.ac.uk/user/tong/statphys.html">https://www.damtp.cam.ac.uk/user/tong/statphys.html</a></p><div style="margin: 20px 0;"><a href="https://www.dropbox.com/scl/fi/abycrjvmu11xg4vmj5el4/.pdf?rlkey=4xssqrzobht9nrupvl6pb6uap&st=gp84pmbw&dl=1" download style="color: #666 !important; text-decoration: none !important; display: block; margin: 8px 0; font-weight: 500;" onmouseover="this.style.color='#666'; this.style.textDecoration='underline';" onmouseout="this.style.color='#666'; this.style.textDecoration='none';">胡承正 热力学与统计力学</a><a href="https://www.dropbox.com/scl/fi/d5hih2hte8mgj7nyy276c/.pdf?rlkey=mqg5ebzku9xpefypt09ea7lci&st=lbotu0bu&dl=1" download style="color: #666 !important; text-decoration: none !important; display: block; margin: 8px 0; font-weight: 500;" onmouseover="this.style.color='#666'; this.style.textDecoration='underline';" onmouseout="this.style.color='#666'; this.style.textDecoration='none';">林宗涵 热力学与统计力学</a><a href="https://www.dropbox.com/scl/fi/7348kg3xehosgacoqsev6/.pdf?rlkey=4cp6d6dtr569mvz42db4hjv27&st=2mxdfrmp&dl=1" download style="color: #666 !important; text-decoration: none !important; display: block; margin: 8px 0; font-weight: 500;" onmouseover="this.style.color='#666'; this.style.textDecoration='underline';" onmouseout="this.style.color='#666'; this.style.textDecoration='none';">热学 李椿，章立源，钱尚武</a><a href="https://www.dropbox.com/scl/fi/htxcodhtbatwr35dtccg0/Thermodynamics-and-Statistical-Physics-Study-Guide.pdf?rlkey=mcuedkmsgzuvhtwfqjr61g3lg&st=arf3grsi&dl=1" download style="color: #666 !important; text-decoration: none !important; display: block; margin: 8px 0; font-weight: 500;" onmouseover="this.style.color='#666'; this.style.textDecoration='underline';" onmouseout="this.style.color='#666'; this.style.textDecoration='none';">热力学与统计物理学习指导</a><a href="https://www.dropbox.com/scl/fi/3o4sqhx0gqizfyg0ewn9g/Statistical-Mechanics-2nd-edition-Paul-D.-Beale-R.K.-Pathria.pdf?rlkey=qyu71dmh9nx7s6hyyjkleq3bc&st=88hpkz95&dl=1" download style="color: #666 !important; text-decoration: none !important; display: block; margin: 8px 0; font-weight: 500;" onmouseover="this.style.color='#666'; this.style.textDecoration='underline';" onmouseout="this.style.color='#666'; this.style.textDecoration='none';">Statistical Mechanics, 2nd edition (Paul D. Beale, R.K. Pathria)</a><a href="https://www.dropbox.com/scl/fi/gtgqy6pmxp3srr56ea6wi/E.-Erwin-Schrodinger.pdf?rlkey=458eb8zeyimsdm0bp2gtgzq1v&st=3cjsapmi&dl=1" download style="color: #666 !important; text-decoration: none !important; display: block; margin: 8px 0; font-weight: 500;" onmouseover="this.style.color='#666'; this.style.textDecoration='underline';" onmouseout="this.style.color='#666'; this.style.textDecoration='none';">统计热力学（E.薛定谔 Erwin Schrodinger）</a><a href="https://www.dropbox.com/scl/fi/ddqvreh8o5n25i2hzgdlo/II.pdf?rlkey=hfgd90pxf7fml2y0b41iyygy1&st=d3uft1gb&dl=0" download style="color: #666 !important; text-decoration: none !important; display: block; margin: 8px 0; font-weight: 500;" onmouseover="this.style.color='#666'; this.style.textDecoration='underline';" onmouseout="this.style.color='#666'; this.style.textDecoration='none';">统计物理学II：凝聚态理论</a></div><h2 id="个人学习想法"><a href="#个人学习想法" class="headerlink" title="个人学习想法"></a>个人学习想法</h2><p>统计物理的学习对公式要有很强的敏感性，我初学统计物理的时候往往对何时使用正确的公式而苦恼。关键在于，掌握基础的一些公式，再依据微分关系进行推导，例如Maxwell关系，内能、焓的微分形式，其余的公式皆可由这些基础的公式得到。故对微积分特别是偏微分的形式要足够熟练。</p>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="2025-8"><a href="#2025-8" class="headerlink" title="2025.8"></a>2025.8</h2>]]></content>
       
     </entry>
     
@@ -224,11 +224,11 @@
     
     
     <entry>
-      <title>花卉</title>
-      <link href="/Flowers/index.html"/>
-      <url>/Flowers/index.html</url>
+      <title>Statistic Mechanics</title>
+      <link href="/major/Thermo/index.html"/>
+      <url>/major/Thermo/index.html</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="一些资料"><a href="#一些资料" class="headerlink" title="一些资料"></a>一些资料</h2><p>David Tong 讲义: <a href="https://www.damtp.cam.ac.uk/user/tong/statphys.html"><strong>David Tong: Lectures on Statistical Physics</strong></a></p><p>Mehran Kardar, MIT: <a href="https://ocw.mit.edu/courses/8-333-statistical-mechanics-i-statistical-mechanics-of-particles-fall-2013/"><strong>Statistical Mechanics I: Statistical Mechanics of Particles</strong></a>, MIT open course</p><p><a href="https://www.sciencedirect.com/book/9780123821881/statistical-mechanics"><strong>Statistical Mechanics, 3nd edition (Paul D. Beale, R.K. Pathria)</strong></a> 建议有一定统计物理知识后学习，对基础的书籍有较多补充且知识体系更严谨</p><p><strong>热力学与统计物理学（胡承正）</strong> 我在学习热力学与统计力学的用书，整体较为合理，但在中后章节稍有几处解释不清</p><p><a href="https://www.clcindex.com/book/view/01BE2034F5EE1FE872FAFCA5B86C87C9/"><strong>热力学与统计物理学学习指导</strong></a> 针对胡先生书籍的习题与答案</p><p><a href="https://www.pup.cn/bookDetail?name=%25E7%2583%25AD%25E5%258A%259B%25E5%25AD%25A6%25E4%25B8%258E%25E7%25BB%259F%25E8%25AE%25A1%25E7%2589%25A9%25E7%2590%2586%25E5%25AD%25A6%25EF%25BC%2588%25E7%25AC%25AC%25E4%25B8%2589%25E7%2589%2588%25EF%25BC%2589&amp;id=3eacc0d2a1a74fbf8102f80e92472b91&amp;0.5562953821562105"><strong>热力学与统计物理学（林宗涵）</strong></a> 较新的一本书，对初学者、自学者友好，解释清晰</p><p><a href="https://books.google.com.hk/books?id=o0k_PmXGG7gC&amp;printsec=frontcover&amp;source=gbs_book_other_versions_r&amp;redir_esc=y#v=onepage&amp;q&amp;f=false"><strong>statistical thermodynamic(Erwin Schrödinger)</strong></a></p><p><a href="https://www.hep.com.cn/book/show/81d65839-9245-4d6e-a8ba-e71a0437b290"><strong>统计物理学II：凝聚态理论 (Е.М.栗弗席兹, Л.П.皮塔耶夫斯基)</strong></a></p><p><a href="https://www.hep.com.cn/book/show/f8269435-6576-4df9-aea6-026d0f6e0153"><strong>热学（李椿，章立源，钱尚武）</strong></a> 补充一些热学的知识，对前几章不清晰的可以在这里获得详细解释</p><h2 id="个人学习想法"><a href="#个人学习想法" class="headerlink" title="个人学习想法"></a>个人学习想法</h2><p>统计物理的学习对公式要有很强的敏感性，我初学统计物理的时候往往对何时使用正确的公式而苦恼。关键在于，掌握基础的一些公式，再依据微分关系进行推导，例如Maxwell关系，内能、焓的微分形式，其余的公式皆可由这些基础的公式得到。故对微积分特别是偏微分的形式要足够熟练。</p>]]></content>
       
     </entry>
     
