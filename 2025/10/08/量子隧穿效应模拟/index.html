@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>量子隧穿效应模拟 | OldCabbage</title><meta name="author" content="Ethan Liu"><meta name="copyright" content="Ethan Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数值可视化方法模拟粒子波穿越障碍的过程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="量子隧穿效应模拟">
+<meta property="og:url" content="https://oldcabbage.fun/2025/10/08/%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF%E6%95%88%E5%BA%94%E6%A8%A1%E6%8B%9F/index.html">
+<meta property="og:site_name" content="OldCabbage">
+<meta property="og:description" content="数值可视化方法模拟粒子波穿越障碍的过程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.postimg.cc/65rbdJyM/quantumtunneling.jpg">
+<meta property="article:published_time" content="2025-10-08T10:30:00.000Z">
+<meta property="article:modified_time" content="2025-10-08T10:59:16.523Z">
+<meta property="article:author" content="Ethan Liu">
+<meta property="article:tag" content="计算物理">
+<meta property="article:tag" content="量子力学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.postimg.cc/65rbdJyM/quantumtunneling.jpg"><link rel="shortcut icon" href="/img/cabbage-peel.png"><link rel="canonical" href="https://oldcabbage.fun/2025/10/08/%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF%E6%95%88%E5%BA%94%E6%A8%A1%E6%8B%9F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        if (name && globalFn[key][name]) return
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0e1deb15fac28b40c47a6627b066d96a";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '量子隧穿效应模拟',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-10-08 18:59:16'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(https://i.postimg.cc/KjJPRDkX/pexels-photo-28939359.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar-peel.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/CV/"><i class="fa-fw fas fa-file"></i><span> 简历</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div><div class="menus_item"><a class="site-page" href="/major/"><i class="fa-fw fas fa-star"></i><span> 专业</span></a></div><div class="menus_item"><a class="site-page" href="/papers/"><i class="fa-fw fas fa-book"></i><span> 在读论文</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 兴趣</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/Flowers/"><i class="fa-fw fas fa-spa"></i><span> 花卉</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://i.postimg.cc/65rbdJyM/quantumtunneling.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/cabbage-large-peel.png" alt="Logo"><span class="site-name">OldCabbage</span></a><a class="nav-page-title" href="/"><span class="site-name">量子隧穿效应模拟</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/CV/"><i class="fa-fw fas fa-file"></i><span> 简历</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div><div class="menus_item"><a class="site-page" href="/major/"><i class="fa-fw fas fa-star"></i><span> 专业</span></a></div><div class="menus_item"><a class="site-page" href="/papers/"><i class="fa-fw fas fa-book"></i><span> 在读论文</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 兴趣</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/Flowers/"><i class="fa-fw fas fa-spa"></i><span> 花卉</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">量子隧穿效应模拟</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-10-08T10:30:00.000Z" title="发表于 2025-10-08 18:30:00">2025-10-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-08T10:59:16.523Z" title="更新于 2025-10-08 18:59:16">2025-10-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>10月7日，诺贝尔物理学奖公布，授予约翰・克拉克（John Clarke）、米歇尔・H・德沃雷（Michel H. Devoret）和约翰・M・马丁尼斯（John M. Martinis），以表彰他们“在电路中发现宏观量子力学隧穿效应与能量量子化现象”。</p>
+<p>我在先前就已经使用Manim动画展现了量子隧穿效应，这里是理论的讲解和具体的模拟方法</p>
+<div style="position:relative; width:100%; height:0px; padding-bottom:56.250%"><iframe allow="fullscreen" allowfullscreen height="100%" src="https://streamable.com/e/h0abck?" width="100%" style="border:none; width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden;"></iframe></div>
+
+<h2 id="量子隧穿效应"><a href="#量子隧穿效应" class="headerlink" title="量子隧穿效应"></a>量子隧穿效应</h2><p>在量子力学中，粒子并不是简单地像经典物理那样沿着确定的轨迹运动，而是表现出波动性质。这种波动性质可以通过波函数来描述，波函数的平方 $|\psi(x,t)|^2$ 表示粒子在某个位置出现的概率密度。</p>
+<p>其中，<strong>一维含时薛定谔方程</strong> 描述了粒子的时间演化过程：</p>
+<script type="math/tex; mode=display">
+i \frac{\partial \psi}{\partial t} = \left( -\frac{1}{2m} \frac{\partial^2}{\partial x^2} + V(x) \right) \psi(x,t)</script><p>这里，$\psi(x,t)$ 是波函数，$m$ 是粒子的质量，$V(x)$ 是势能。</p>
+<h2 id="量子隧穿：粒子穿越势垒"><a href="#量子隧穿：粒子穿越势垒" class="headerlink" title="量子隧穿：粒子穿越势垒"></a><strong>量子隧穿：粒子穿越势垒</strong></h2><p>量子隧穿效应指的是，尽管粒子的能量 $E$ 小于某个势垒的高度 $V_0$，它依然有一定的概率穿越势垒。这是经典物理中无法解释的现象。</p>
+<p>势垒可以被建模为一个有限的方势：</p>
+<script type="math/tex; mode=display">
+V(x) = 
+\begin{cases}
+V_0 & \text{如果 } x \in [x_{\text{left}}, x_{\text{right}}] \\
+0 & \text{其他}
+\end{cases}</script><p>粒子在碰到势垒时，波函数会发生衰减，但并不是完全消失，存在一定的透过概率，称为<strong>隧穿概率</strong>。</p>
+<h3 id="波包的传播"><a href="#波包的传播" class="headerlink" title="波包的传播"></a><strong>波包的传播</strong></h3><p>量子波包的初始状态可以通过一个高斯包络与平面波的组合来描述：</p>
+<script type="math/tex; mode=display">
+\psi(x, 0) = A \cdot \exp \left( -\frac{(x - x_0)^2}{2 \sigma^2} \right) \cdot \exp(i k_0 x)</script><p>其中，$A$ 是振幅，$x_0$ 是波包中心，$\sigma$ 是波包的宽度，$k_0$ 是波数，表示粒子的动量。</p>
+<h3 id="分步傅里叶法"><a href="#分步傅里叶法" class="headerlink" title="分步傅里叶法"></a><strong>分步傅里叶法</strong></h3><p>为了数值上求解波函数的时间演化，常用的数值方法之一是<strong>分步傅里叶法</strong>。其核心思想是将时间演化分为两个步骤：首先在实空间中考虑势能的影响，然后在动量空间中考虑动能的影响。具体公式如下：</p>
+<script type="math/tex; mode=display">
+\psi(t+\Delta t) \approx \exp\left(-i \frac{V(x)}{2} \Delta t\right) \cdot \mathcal{F}^{-1} \left[ \exp\left(-i \frac{k^2}{2m} \Delta t\right) \mathcal{F} \left( \exp\left(-i \frac{V(x)}{2} \Delta t\right) \psi(t) \right) \right]</script><p>其中，$\mathcal{F}$ 表示傅里叶变换，$k$ 是波数。</p>
+<h3 id="观察量子隧穿"><a href="#观察量子隧穿" class="headerlink" title="观察量子隧穿"></a><strong>观察量子隧穿</strong></h3><p>在我们的模拟中，波包从左侧传入，并遇到一个有限高度的势垒，观察其在势垒前后的行为，尤其是<strong>隧穿效应</strong>的显现。通过数值方法模拟时间演化并绘制出波包的<strong>概率密度图</strong> $|\psi(x,t)|^2$，可以清晰地看到当波包的能量低于势垒高度时，它依然有部分概率“穿透”势垒，从而展示量子力学中经典物理无法预测的现象。</p>
+<h2 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h2><p>采用Manim和Python脚本展示量子隧穿效应中粒子波是如何穿越障碍的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===============================================================</span></span><br><span class="line"><span class="comment"># 1. 物理与数值：一维含时薛定谔方程 i dψ/dt = [-(1/2m)∂² + V(x)] ψ</span></span><br><span class="line"><span class="comment">#    单位化：ℏ = 1, m = 1</span></span><br><span class="line"><span class="comment">#    数值方法：分步傅里叶法（Split-Step Fourier, SSFM）</span></span><br><span class="line"><span class="comment">#    修改：模拟从无限远传播的波包</span></span><br><span class="line"><span class="comment"># ===============================================================</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_spatial_grid</span>(<span class="params">num_points: <span class="built_in">int</span>, domain_half_length: <span class="built_in">float</span></span>) -&gt; <span class="built_in">tuple</span>[np.ndarray, <span class="built_in">float</span>]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成空间网格与网格间距。</span></span><br><span class="line"><span class="string">    - num_points: 空间采样点数（建议为 2 的幂）</span></span><br><span class="line"><span class="string">    - domain_half_length: 空间范围的一半 L，使得 x ∈ [-L, L]</span></span><br><span class="line"><span class="string">    返回:</span></span><br><span class="line"><span class="string">      x: 形如 [-L, ..., L) 的等距网格</span></span><br><span class="line"><span class="string">      dx: 网格间距</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    x = np.linspace(-domain_half_length, domain_half_length, num_points, endpoint=<span class="literal">False</span>)</span><br><span class="line">    dx = x[<span class="number">1</span>] - x[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> x, dx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_wavenumbers</span>(<span class="params">num_points: <span class="built_in">int</span>, dx: <span class="built_in">float</span></span>) -&gt; np.ndarray:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成与 FFT 对应的波数数组 k（与 numpy.fft.fftfreq 一致的排列）。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 2π 因子放入动能传播子中统一处理，这里只生成频率再乘以 2π</span></span><br><span class="line">    freqs = np.fft.fftfreq(num_points, d=dx)</span><br><span class="line">    k = <span class="number">2.0</span> * np.pi * freqs</span><br><span class="line">    <span class="keyword">return</span> k</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_potential_barrier</span>(<span class="params">x: np.ndarray, barrier_left: <span class="built_in">float</span>, barrier_right: <span class="built_in">float</span>, barrier_height: <span class="built_in">float</span></span>) -&gt; np.ndarray:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    有限方势垒：</span></span><br><span class="line"><span class="string">      V(x) = barrier_height, x ∈ [barrier_left, barrier_right]</span></span><br><span class="line"><span class="string">              0,          其他</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    V = np.zeros_like(x)</span><br><span class="line">    mask = (x &gt;= barrier_left) &amp; (x &lt;= barrier_right)</span><br><span class="line">    V[mask] = barrier_height</span><br><span class="line">    <span class="keyword">return</span> V</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_initial_plane_wave</span>(<span class="params">x: np.ndarray, k0: <span class="built_in">float</span>, amplitude: <span class="built_in">float</span> = <span class="number">1.0</span></span>) -&gt; np.ndarray:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    平面波 ψ(x,0) = A * exp(i k0 x)，不进行空间归一化。</span></span><br><span class="line"><span class="string">    模拟从无限远传播的平面波。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    psi = amplitude * np.exp(<span class="number">1j</span> * k0 * x)</span><br><span class="line">    <span class="keyword">return</span> psi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_initial_wave_packet_from_left</span>(<span class="params">x: np.ndarray, k0: <span class="built_in">float</span>, amplitude: <span class="built_in">float</span> = <span class="number">1.0</span>, </span></span><br><span class="line"><span class="params">                                       packet_center: <span class="built_in">float</span> = -<span class="number">30.0</span>, packet_width: <span class="built_in">float</span> = <span class="number">3.0</span></span>) -&gt; np.ndarray:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    创建一个从左侧传播进来的波包，模拟平面波从无限远传播的效果。</span></span><br><span class="line"><span class="string">    使用高斯包络来限制初始波包的位置，让它从左侧逐渐传播进来。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 高斯包络</span></span><br><span class="line">    gaussian_envelope = np.exp(-((x - packet_center) ** <span class="number">2</span>) / (<span class="number">2.0</span> * (packet_width ** <span class="number">2</span>)))</span><br><span class="line">    <span class="comment"># 平面波相位</span></span><br><span class="line">    plane_wave_phase = np.exp(<span class="number">1j</span> * k0 * x)</span><br><span class="line">    <span class="comment"># 组合</span></span><br><span class="line">    psi = amplitude * gaussian_envelope * plane_wave_phase</span><br><span class="line">    <span class="keyword">return</span> psi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_initial_gaussian_packet</span>(<span class="params">x: np.ndarray, center: <span class="built_in">float</span>, width: <span class="built_in">float</span>, k0: <span class="built_in">float</span></span>) -&gt; np.ndarray:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    高斯波包 ψ(x,0) ~ exp(-(x-x0)^2/(4σ^2)) * exp(i k0 x)，并进行 L2 归一化。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    gaussian_envelope = np.exp(-((x - center) ** <span class="number">2</span>) / (<span class="number">4.0</span> * (width ** <span class="number">2</span>)))</span><br><span class="line">    plane_wave_phase = np.exp(<span class="number">1j</span> * k0 * x)</span><br><span class="line">    psi = gaussian_envelope * plane_wave_phase</span><br><span class="line">    <span class="comment"># L2 归一化</span></span><br><span class="line">    norm = np.sqrt(np.trapz(np.<span class="built_in">abs</span>(psi) ** <span class="number">2</span>, x))</span><br><span class="line">    psi /= norm</span><br><span class="line">    <span class="keyword">return</span> psi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">split_step_fourier_time_evolution</span>(<span class="params"></span></span><br><span class="line"><span class="params">    psi0: np.ndarray,</span></span><br><span class="line"><span class="params">    potential: np.ndarray,</span></span><br><span class="line"><span class="params">    time_step_sim: <span class="built_in">float</span>,</span></span><br><span class="line"><span class="params">    num_sim_steps: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">    dx: <span class="built_in">float</span>,</span></span><br><span class="line"><span class="params">    k_array: np.ndarray,</span></span><br><span class="line"><span class="params">    store_stride: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="built_in">tuple</span>[np.ndarray, np.ndarray]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    分步傅里叶法时间推进：</span></span><br><span class="line"><span class="string">      ψ(t+dt) ≈ e^&#123;-iV dt/2&#125; F^&#123;-1&#125;[ e^&#123;-i k^2 dt / (2m)&#125; F[e^&#123;-iV dt/2&#125; ψ(t)] ]</span></span><br><span class="line"><span class="string">    此处取 ℏ=1, m=1。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - psi0: 初始 ψ(x)</span></span><br><span class="line"><span class="string">    - potential: V(x)</span></span><br><span class="line"><span class="string">    - time_step_sim: 数值仿真时间步长 dt（较小以稳定）</span></span><br><span class="line"><span class="string">    - num_sim_steps: 总仿真步数 Nsteps</span></span><br><span class="line"><span class="string">    - dx: 空间网格间距</span></span><br><span class="line"><span class="string">    - k_array: 与 FFT 匹配的波数数组</span></span><br><span class="line"><span class="string">    - store_stride: 每隔多少个仿真步保存一次数据</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    返回:</span></span><br><span class="line"><span class="string">      times_saved: shape (Nsaved,)</span></span><br><span class="line"><span class="string">      psi_saved: shape (Nsaved, N), 复数 数组（可据此计算 |ψ|²）</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    num_points = psi0.size</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 传播子（常量预计算）</span></span><br><span class="line">    exp_halfV = np.exp(-<span class="number">1j</span> * potential * (time_step_sim / <span class="number">2.0</span>))</span><br><span class="line">    expT = np.exp(-<span class="number">1j</span> * (k_array ** <span class="number">2</span>) * (time_step_sim / <span class="number">2.0</span>))  <span class="comment"># 先保存半步，合并两次FFT可用同一数组</span></span><br><span class="line">    <span class="comment"># 实际上一次完整步长需要 expT^2；为了减少额外乘法，我们每个半步都乘一次 expT</span></span><br><span class="line"></span><br><span class="line">    psi = psi0.astype(np.complex128, copy=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 预估保存次数</span></span><br><span class="line">    num_saved = (num_sim_steps // store_stride) + <span class="number">1</span></span><br><span class="line">    psi_saved = np.zeros((num_saved, num_points), dtype=np.complex128)</span><br><span class="line">    times_saved = np.zeros(num_saved, dtype=np.float64)</span><br><span class="line"></span><br><span class="line">    save_index = <span class="number">0</span></span><br><span class="line">    psi_saved[save_index, :] = psi</span><br><span class="line">    times_saved[save_index] = <span class="number">0.0</span></span><br><span class="line">    save_index += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> step <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, num_sim_steps + <span class="number">1</span>):</span><br><span class="line">        <span class="comment"># V 半步</span></span><br><span class="line">        psi *= exp_halfV</span><br><span class="line">        <span class="comment"># 动能半步（频域）</span></span><br><span class="line">        psi_k = np.fft.fft(psi)</span><br><span class="line">        psi_k *= expT</span><br><span class="line">        psi = np.fft.ifft(psi_k)</span><br><span class="line">        <span class="comment"># 再做一次动能半步合成整步（T 半步 + T 半步），避免额外中间变量</span></span><br><span class="line">        psi_k = np.fft.fft(psi)</span><br><span class="line">        psi_k *= expT</span><br><span class="line">        psi = np.fft.ifft(psi_k)</span><br><span class="line">        <span class="comment"># V 半步</span></span><br><span class="line">        psi *= exp_halfV</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (step % store_stride) == <span class="number">0</span>:</span><br><span class="line">            psi_saved[save_index, :] = psi</span><br><span class="line">            times_saved[save_index] = step * time_step_sim</span><br><span class="line">            save_index += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 若末尾没有正好落在 stride 上，数组尾部仍为零；裁剪到实际保存长度</span></span><br><span class="line">    psi_saved = psi_saved[:save_index, :]</span><br><span class="line">    times_saved = times_saved[:save_index]</span><br><span class="line">    <span class="keyword">return</span> times_saved, psi_saved</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===============================================================</span></span><br><span class="line"><span class="comment"># 2. Manim 场景：模拟从无限远传播的波包穿越势垒</span></span><br><span class="line"><span class="comment">#    - 扩大空间域以容纳更长的传播距离</span></span><br><span class="line"><span class="comment">#    - 调整初始条件使波包从更远的地方开始</span></span><br><span class="line"><span class="comment">#    - 优化动画参数以适应更长的传播时间</span></span><br><span class="line"><span class="comment"># ===============================================================</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QuantumBarrierInfinity</span>(<span class="title class_ inherited__">Scene</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">construct</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># ---------- 数值参数（大幅扩大空间域） ----------</span></span><br><span class="line">        num_points = <span class="number">4096</span>            <span class="comment"># 大幅增加空间采样点以支持更大的空间域</span></span><br><span class="line">        L = <span class="number">100.0</span>                   <span class="comment"># 大幅扩大空间半长，x ∈ [-L, L)</span></span><br><span class="line">        x, dx = generate_spatial_grid(num_points, L)</span><br><span class="line">        k = generate_wavenumbers(num_points, dx)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 势垒参数（有限高势垒）</span></span><br><span class="line">        barrier_left = -<span class="number">7.0</span></span><br><span class="line">        barrier_right = <span class="number">7.0</span></span><br><span class="line">        barrier_height = <span class="number">2.0</span>        </span><br><span class="line">        V = build_potential_barrier(x, barrier_left, barrier_right, barrier_height)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 波包参数：从左侧传播进来，模拟平面波从无限远传播的效果</span></span><br><span class="line">        k0 = <span class="number">1.5</span>                    <span class="comment"># 动量（波数），入射动能</span></span><br><span class="line">        amplitude = <span class="number">0.5</span>             <span class="comment"># 波包振幅</span></span><br><span class="line">        packet_center = -<span class="number">30.0</span>       <span class="comment"># 初始波包中心位置</span></span><br><span class="line">        packet_width = <span class="number">3.0</span>          <span class="comment"># 波包宽度</span></span><br><span class="line">        psi0 = build_initial_wave_packet_from_left(x, k0, amplitude, packet_center, packet_width)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 时间参数（调整以适应波从左侧传播）</span></span><br><span class="line">        t_max = <span class="number">20.0</span>                <span class="comment"># 增加总时间，让波有足够时间从左侧传播到势垒</span></span><br><span class="line">        dt_sim = <span class="number">1e-3</span>               <span class="comment"># 调整数值仿真步长</span></span><br><span class="line">        total_steps = <span class="built_in">int</span>(t_max / dt_sim)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 存储步距：约 60 FPS，按 stride 对齐</span></span><br><span class="line">        target_fps = <span class="number">60.0</span></span><br><span class="line">        dt_store = <span class="number">1.0</span> / target_fps</span><br><span class="line">        store_stride = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">int</span>(<span class="built_in">round</span>(dt_store / dt_sim)))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># ---------- 预计算时间演化 ----------</span></span><br><span class="line">        times, psi_saved = split_step_fourier_time_evolution(</span><br><span class="line">            psi0=psi0,</span><br><span class="line">            potential=V,</span><br><span class="line">            time_step_sim=dt_sim,</span><br><span class="line">            num_sim_steps=total_steps,</span><br><span class="line">            dx=dx,</span><br><span class="line">            k_array=k,</span><br><span class="line">            store_stride=store_stride,</span><br><span class="line">        )</span><br><span class="line">        density_saved = (np.<span class="built_in">abs</span>(psi_saved) ** <span class="number">2</span>).astype(np.float64)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 为纵轴选择一个合适的上限</span></span><br><span class="line">        density_max = <span class="built_in">float</span>(np.<span class="built_in">max</span>(density_saved))</span><br><span class="line">        y_max = <span class="built_in">max</span>(<span class="number">0.3</span>, <span class="built_in">min</span>(<span class="number">0.8</span>, density_max * <span class="number">1.3</span>))  <span class="comment"># 调整范围以适应新的参数</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># ---------- 构建坐标轴与图元 ----------</span></span><br><span class="line">        <span class="comment"># 只显示与势垒相互作用的区域，而不是整个计算域</span></span><br><span class="line">        display_range = <span class="number">25.0</span>  <span class="comment"># 显示范围：x ∈ [-15, 15]</span></span><br><span class="line">        axes = Axes(</span><br><span class="line">            x_range=[-display_range, display_range, <span class="number">3.0</span>],   <span class="comment"># 调整刻度间隔</span></span><br><span class="line">            y_range=[<span class="number">0.0</span>, y_max, y_max / <span class="number">8.0</span>],</span><br><span class="line">            x_length=<span class="number">12.0</span>,          <span class="comment"># 增加坐标轴长度</span></span><br><span class="line">            y_length=<span class="number">5.3</span>,           <span class="comment"># 降低动画高度</span></span><br><span class="line">            axis_config=&#123;</span><br><span class="line">                <span class="string">&quot;include_numbers&quot;</span>: <span class="literal">True</span>, </span><br><span class="line">                <span class="string">&quot;font_size&quot;</span>: <span class="number">24</span>,</span><br><span class="line">                <span class="string">&quot;decimal_number_config&quot;</span>: &#123;<span class="string">&quot;num_decimal_places&quot;</span>: <span class="number">2</span>&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            tips=<span class="literal">False</span>,</span><br><span class="line">        ).to_edge(DOWN, buff=<span class="number">0.8</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 手动调整纵坐标数字位置，让它们向左移动</span></span><br><span class="line">        <span class="keyword">for</span> number <span class="keyword">in</span> axes.y_axis.numbers:</span><br><span class="line">            number.shift(LEFT * <span class="number">0.3</span>)</span><br><span class="line"></span><br><span class="line">        title = Tex(<span class="string">&quot;Quantum Tunneling through Finite Potential Barrier&quot;</span>).to_edge(UP, buff=<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 势垒：用半透明矩形表示，高度与势垒高度成比例</span></span><br><span class="line">        <span class="comment"># 将势垒高度映射到显示范围，使其更直观</span></span><br><span class="line">        barrier_display_height = barrier_height * <span class="number">0.3</span>  <span class="comment"># 直接使用缩放因子</span></span><br><span class="line">        barrier_polygon = Polygon(</span><br><span class="line">            axes.c2p(barrier_left, <span class="number">0.0</span>, <span class="number">0.0</span>),</span><br><span class="line">            axes.c2p(barrier_right, <span class="number">0.0</span>, <span class="number">0.0</span>),</span><br><span class="line">            axes.c2p(barrier_right, barrier_display_height, <span class="number">0.0</span>),</span><br><span class="line">            axes.c2p(barrier_left, barrier_display_height, <span class="number">0.0</span>),</span><br><span class="line">            color=YELLOW,</span><br><span class="line">            fill_opacity=<span class="number">0.3</span>,</span><br><span class="line">            stroke_opacity=<span class="number">0.8</span>,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 添加势垒标签</span></span><br><span class="line">        barrier_label = Tex(<span class="string">&quot;Barrier&quot;</span>, font_size=<span class="number">24</span>).next_to(barrier_polygon, UP, buff=<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 概率密度曲线：基于预计算结果，使用 always_redraw 按时间索引重建</span></span><br><span class="line">        time_tracker = ValueTracker(<span class="number">0.0</span>)</span><br><span class="line"></span><br><span class="line">        x_values = x</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">build_density_graph</span>() -&gt; Mobject:</span><br><span class="line">            current_t = time_tracker.get_value()</span><br><span class="line">            max_index = <span class="built_in">len</span>(times) - <span class="number">1</span></span><br><span class="line">            <span class="comment"># times 大致等间隔：使用 dt_store 对齐索引</span></span><br><span class="line">            dt_store_effective = times[<span class="number">1</span>] - times[<span class="number">0</span>] <span class="keyword">if</span> <span class="built_in">len</span>(times) &gt; <span class="number">1</span> <span class="keyword">else</span> <span class="number">1.0</span> / <span class="number">60.0</span></span><br><span class="line">            index = <span class="built_in">int</span>(np.clip(<span class="built_in">round</span>(current_t / dt_store_effective), <span class="number">0</span>, max_index))</span><br><span class="line">            y_values = density_saved[index]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 只显示显示范围内的数据</span></span><br><span class="line">            mask = (x &gt;= -display_range) &amp; (x &lt;= display_range)</span><br><span class="line">            x_display = x[mask]</span><br><span class="line">            y_display = y_values[mask]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 使用 line graph 连接离散点</span></span><br><span class="line">            graph = axes.plot_line_graph(</span><br><span class="line">                x_values=x_display,</span><br><span class="line">                y_values=y_display,</span><br><span class="line">                add_vertex_dots=<span class="literal">False</span>,</span><br><span class="line">                line_color=BLUE,</span><br><span class="line">                stroke_width=<span class="number">3</span>,</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">return</span> graph</span><br><span class="line"></span><br><span class="line">        density_graph = always_redraw(build_density_graph)</span><br><span class="line"></span><br><span class="line">        time_label = always_redraw(</span><br><span class="line">            <span class="keyword">lambda</span>: Tex(<span class="string">f&quot;t = <span class="subst">&#123;time_tracker.get_value():<span class="number">.2</span>f&#125;</span> s&quot;</span>, font_size=<span class="number">32</span>).next_to(axes, DOWN, buff=<span class="number">0.3</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        params_text = VGroup(</span><br><span class="line">            Tex(<span class="string">f&quot;Initial Energy: <span class="subst">&#123;k0**<span class="number">2</span>/<span class="number">2</span>:<span class="number">.2</span>f&#125;</span>&quot;</span>, font_size=<span class="number">20</span>),</span><br><span class="line">            Tex(<span class="string">f&quot;Potential Barrier Height: <span class="subst">&#123;barrier_display_height:<span class="number">.2</span>f&#125;</span>&quot;</span>, font_size=<span class="number">20</span>),</span><br><span class="line">        ).arrange(DOWN, aligned_edge=LEFT).to_edge(LEFT, buff=<span class="number">2.5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># ---------- 动画播放 ----------</span></span><br><span class="line">        <span class="variable language_">self</span>.add(title, axes, barrier_polygon, barrier_label, density_graph, time_label, params_text)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加初始说明</span></span><br><span class="line">        initial_text = Tex(<span class="string">&quot;Wave Propagate from left&quot;</span>, font_size=<span class="number">28</span>).to_edge(RIGHT, buff=<span class="number">1.5</span>)</span><br><span class="line">        <span class="variable language_">self</span>.add(initial_text)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 播放动画</span></span><br><span class="line">        <span class="variable language_">self</span>.play(</span><br><span class="line">            time_tracker.animate.set_value(<span class="built_in">float</span>(times[-<span class="number">1</span>])), </span><br><span class="line">            run_time=<span class="built_in">float</span>(times[-<span class="number">1</span>]), </span><br><span class="line">            rate_func=linear</span><br><span class="line">        )</span><br><span class="line"> </span><br><span class="line">        <span class="variable language_">self</span>.remove(initial_text)</span><br><span class="line">        <span class="variable language_">self</span>.wait(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>本文只展示了最基本的粒子波穿越障碍的模拟，诺贝奖表彰给宏观的粒子隧穿效应的一个具体的应用，研究基础是“约瑟夫森结”，一定条件下，电流可以通过绝缘体流动。整体来说是旨在授予量子力学的奇异性质可以在宏观尺度上得到体现，为量子计算的应用做出贡献</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://oldcabbage.fun">Ethan Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://oldcabbage.fun/2025/10/08/%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF%E6%95%88%E5%BA%94%E6%A8%A1%E6%8B%9F/">https://oldcabbage.fun/2025/10/08/%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF%E6%95%88%E5%BA%94%E6%A8%A1%E6%8B%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://oldcabbage.fun" target="_blank">OldCabbage</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E7%89%A9%E7%90%86/">计算物理</a><a class="post-meta__tags" href="/tags/%E9%87%8F%E5%AD%90%E5%8A%9B%E5%AD%A6/">量子力学</a></div><div class="post-share"><div class="social-share" data-image="https://i.postimg.cc/65rbdJyM/quantumtunneling.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2025/10/03/%E5%8F%8C%E6%91%86%E4%B8%8E%E4%B8%89%E6%91%86%E7%9A%84%E6%B7%B7%E6%B2%8C%E6%A8%A1%E6%8B%9F/" title="双摆与三摆的混沌模拟"><img class="cover" src="https://i.postimg.cc/VkgtPSHC/Double-pendulum-flip-time-2021-1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">双摆与三摆的混沌模拟</div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a href="/2024/10/24/comphy-oscillator/" title="计算物理之简谐振动"><img class="cover" src="https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-24</div><div class="title">计算物理之简谐振动</div></div></a><a href="/2025/10/03/%E5%8F%8C%E6%91%86%E4%B8%8E%E4%B8%89%E6%91%86%E7%9A%84%E6%B7%B7%E6%B2%8C%E6%A8%A1%E6%8B%9F/" title="双摆与三摆的混沌模拟"><img class="cover" src="https://i.postimg.cc/VkgtPSHC/Double-pendulum-flip-time-2021-1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-03</div><div class="title">双摆与三摆的混沌模拟</div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Waline</span><span id="switch-btn"></span><span class="second-comment">Livere</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div><div><div id="lv-container" data-id="city" data-uid="MTAyMC82MDE5OS8zNjY2Nw=="></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/avatar-peel.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Ethan Liu</div><div class="author-info-description">不识庐山真面目，自缘身在此山中</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/old-cabbage"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/old-cabbage" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:honesty.liu@whu.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF%E6%95%88%E5%BA%94"><span class="toc-number">1.</span> <span class="toc-text">量子隧穿效应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF%EF%BC%9A%E7%B2%92%E5%AD%90%E7%A9%BF%E8%B6%8A%E5%8A%BF%E5%9E%92"><span class="toc-number">2.</span> <span class="toc-text">量子隧穿：粒子穿越势垒</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A2%E5%8C%85%E7%9A%84%E4%BC%A0%E6%92%AD"><span class="toc-number">2.1.</span> <span class="toc-text">波包的传播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%AD%A5%E5%82%85%E9%87%8C%E5%8F%B6%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">分步傅里叶法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF"><span class="toc-number">2.3.</span> <span class="toc-text">观察量子隧穿</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F"><span class="toc-number">3.</span> <span class="toc-text">模拟</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/10/08/%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF%E6%95%88%E5%BA%94%E6%A8%A1%E6%8B%9F/" title="量子隧穿效应模拟"><img src="https://i.postimg.cc/65rbdJyM/quantumtunneling.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="量子隧穿效应模拟"/></a><div class="content"><a class="title" href="/2025/10/08/%E9%87%8F%E5%AD%90%E9%9A%A7%E7%A9%BF%E6%95%88%E5%BA%94%E6%A8%A1%E6%8B%9F/" title="量子隧穿效应模拟">量子隧穿效应模拟</a><time datetime="2025-10-08T10:30:00.000Z" title="发表于 2025-10-08 18:30:00">2025-10-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/03/%E5%8F%8C%E6%91%86%E4%B8%8E%E4%B8%89%E6%91%86%E7%9A%84%E6%B7%B7%E6%B2%8C%E6%A8%A1%E6%8B%9F/" title="双摆与三摆的混沌模拟"><img src="https://i.postimg.cc/VkgtPSHC/Double-pendulum-flip-time-2021-1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="双摆与三摆的混沌模拟"/></a><div class="content"><a class="title" href="/2025/10/03/%E5%8F%8C%E6%91%86%E4%B8%8E%E4%B8%89%E6%91%86%E7%9A%84%E6%B7%B7%E6%B2%8C%E6%A8%A1%E6%8B%9F/" title="双摆与三摆的混沌模拟">双摆与三摆的混沌模拟</a><time datetime="2025-10-02T16:22:00.000Z" title="发表于 2025-10-03 00:22:00">2025-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/20/%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F/" title="复现与展望——源自几何对凸粒子普适的公式"><img src="https://fresnel.readthedocs.io/en/v0.13.6/_images/cuboid-hires.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="复现与展望——源自几何对凸粒子普适的公式"/></a><div class="content"><a class="title" href="/2025/05/20/%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B1%95%E6%9C%9B%E2%80%94%E2%80%94%E6%BA%90%E8%87%AA%E5%87%A0%E4%BD%95%E5%AF%B9%E5%87%B8%E7%B2%92%E5%AD%90%E6%99%AE%E9%80%82%E7%9A%84%E5%85%AC%E5%BC%8F/" title="复现与展望——源自几何对凸粒子普适的公式">复现与展望——源自几何对凸粒子普适的公式</a><time datetime="2025-05-20T11:21:00.000Z" title="发表于 2025-05-20 19:21:00">2025-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/24/comphy-oscillator/" title="计算物理之简谐振动"><img src="https://www.markhamlawfirm.com/wp-content/uploads/2016/08/The-Pendulum-Begins-to-Swing-Back.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算物理之简谐振动"/></a><div class="content"><a class="title" href="/2024/10/24/comphy-oscillator/" title="计算物理之简谐振动">计算物理之简谐振动</a><time datetime="2024-10-24T10:08:00.000Z" title="发表于 2024-10-24 18:08:00">2024-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/23/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%9D%87%E5%8C%80%E4%BB%8B%E8%B4%A8%E7%83%AD%E5%8A%9B%E5%AD%A6/" title="热力学与统计力学之均匀介质热力学"><img src="https://images.pexels.com/photos/1647220/pexels-photo-1647220.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="热力学与统计力学之均匀介质热力学"/></a><div class="content"><a class="title" href="/2024/10/23/%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%9D%87%E5%8C%80%E4%BB%8B%E8%B4%A8%E7%83%AD%E5%8A%9B%E5%AD%A6/" title="热力学与统计力学之均匀介质热力学">热力学与统计力学之均匀介质热力学</a><time datetime="2024-10-23T11:02:00.000Z" title="发表于 2024-10-23 19:02:00">2024-10-23</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://i.postimg.cc/65rbdJyM/quantumtunneling.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Ethan Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (false){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  let initFn = window.walineFn || null
+
+  const initWaline = (Fn) => {
+    const waline = Fn(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://oldcabbage-sever.vercel.app',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      path: window.location.pathname,
+      comment: false,
+    }, null))
+
+    const destroyWaline = () => {
+      waline.destroy()
+    }
+
+    btf.addGlobalFn('pjaxSendOnce', destroyWaline, 'destroyWaline')
+  }
+
+  const loadWaline = () => {
+    if (initFn) initWaline(initFn)
+    else {
+      btf.getCSS('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.css')
+        .then(() => import('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.js'))
+        .then(({ init }) => {
+          initFn = init || Waline.init
+          initWaline(initFn)
+          window.walineFn = initFn
+        })
+    }
+  }
+
+  if ('Waline' === 'Waline' || !false) {
+    if (false) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+    else setTimeout(loadWaline, 0)
+  } else {
+    window.loadOtherComment = loadWaline
+  }
+})()</script><script>(()=>{
+  const loadLivere = () => {
+    if (typeof LivereTower === 'object') window.LivereTower.init()
+    else {
+      (function(d, s) {
+          var j, e = d.getElementsByTagName(s)[0];
+          if (typeof LivereTower === 'function') { return; }
+          j = d.createElement(s);
+          j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+          j.async = true;
+          e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    }
+  }
+
+  if ('Waline' === 'Livere' || !false) {
+    if (false) btf.loadComment(document.getElementById('lv-container'), loadLivere)
+    else loadLivere()
+  } else {
+    window.loadOtherComment = loadLivere
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="12757056128" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-volume="0.2" data-order="random"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      pjax.loadUrl('/404.html')
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
